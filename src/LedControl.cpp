@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <LibRobus.h>
+#include <stdlib.h>
 #include "LedControl.h"
 
 //fichier qui contrôle les LED de couleurs pour la dance
@@ -10,9 +11,8 @@ const int RLED = 49;
 const int GLED = 50;
 const int BLED = 51;
 
-//ADJUST COUNT MAX AND DELAYS FOR THE FUTURE!!!!
-const int counterMax = 10; //nombre de fois que chaque DEL flashe
-const int flashDelay = 500; //temps entre les échanges
+//ADJUST DELAYS FOR THE FUTURE!!!! -> should be fine now (assuming the time is in milliseconds)
+const int flashDelay = 250; //durée d'un flash
 
 //initialise les DELs
 void LEDInit(){
@@ -64,8 +64,9 @@ void bLedOff(){
 }
 
 //fait alterner DEL Jaune et Rouge
-void flashYR(){
+void flashYR(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -80,8 +81,9 @@ void flashYR(){
 }
 
 //fait alterner DEL Jaune et Verte
-void flashYG(){
+void flashYG(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -96,8 +98,9 @@ void flashYG(){
 }
 
 //fait alterner DEL Jaune et Bleue
-void flashYB(){
+void flashYB(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -112,8 +115,9 @@ void flashYB(){
 }
 
 //fait alterner DEL Rouge et Verte
-void flashRG(){
+void flashRG(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(RLED,HIGH);
@@ -128,8 +132,9 @@ void flashRG(){
 }
 
 //fait alterner DEL Rouge et Bleue
-void flashRB(){
+void flashRB(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(RLED,HIGH);
@@ -144,8 +149,9 @@ void flashRB(){
 }
 
 //fait alterner DEL Verte et Bleue
-void flashGB(){
+void flashGB(int length){
     int count = 0;
+    int counterMax = length * 4;
     while(count < counterMax)  
     {
         digitalWrite(GLED,HIGH);
@@ -157,4 +163,40 @@ void flashGB(){
         count++;
     }
     digitalWrite(BLED,LOW);
+}
+
+//allume des lumières aléatoires
+void randomLed(int length){
+    int count = 0;
+    int counterMax = length * 4;
+    int ledChoice = 0;
+    while(count < counterMax)
+    {
+        ledChoice = rand()%(3-0+1)+0;
+        if(ledChoice == 0)
+        {
+            yLedOn();
+            delay(flashDelay);
+            yLedOff();
+        }
+        if(ledChoice == 1)
+        {
+            rLedOn();
+            delay(flashDelay);
+            rLedOff();
+        }
+        if(ledChoice == 2)
+        {
+            gLedOn();
+            delay(flashDelay);
+            gLedOff();
+        }
+        if(ledChoice == 3)
+        {
+            bLedOn();
+            delay(flashDelay);
+            bLedOff();
+        }
+        count++;
+    }
 }
