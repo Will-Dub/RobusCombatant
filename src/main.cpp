@@ -4,6 +4,7 @@
 #include "WheelPID.h"
 #include "Quille.h"
 #include "Movement.h"
+#include "Line.h"
 
 //-----------------------------
 // MAIN CODE.
