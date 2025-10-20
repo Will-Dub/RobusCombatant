@@ -8,6 +8,7 @@
 enum QuilleState {FINDING, ALIGNING, GOING_TO, GOING_BACK};
 
 constexpr float FORWARD_DISTANCE = 12.5f;
+constexpr float FORWARD_GOING_TO_MAX = 25.0f;
 
 void waitEndMoveFinding();
 void waitEndMoveAligning();
