@@ -10,8 +10,7 @@
 //-----------------------------
 void setup() {
     BoardInit();
-    WHEEL_PID::initPID();
-    Movement::initMovement();
+    Movement::init();
     Serial.begin(115200);
     pinMode(IR_LEFT_PIN, INPUT);
     pinMode(IR_RIGHT_PIN, INPUT);

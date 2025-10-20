@@ -13,7 +13,7 @@ namespace WHEEL_PID{
     const float kd = 0.001;
     const float maxIntegral = 1000.0;
 
-    void initPID();
+    void init();
     void setPIDDesiredPulse(int, int);
     void runPIDController();
     void reset();

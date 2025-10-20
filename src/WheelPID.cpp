@@ -17,7 +17,7 @@ namespace WHEEL_PID{
         return value;
     }
 
-    void initPID(){
+    void init(){
         previousTime = millis();
     }
 

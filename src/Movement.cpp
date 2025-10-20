@@ -2,35 +2,54 @@
 
 namespace Movement {
     MoveEnum currentMove;
-    MoveEnum lastMove;
+    float distance;
 
-    void initMovement(){
-        WHEEL_PID::initPID();
+    void init(){
+        WHEEL_PID::init();
         WHEEL_PID::setPIDDesiredPulse(0, 0);
         currentMove = MoveEnum::NONE;
-        lastMove = MoveEnum::NONE;
     }
 
-    void moveForward(){
+    void moveForward(float pDistance){
+        moveForwardNonBlocking(pDistance);
+        waitEndMove();
+    }
+
+    void moveForwardNonBlocking(float pDistance){
         currentMove = MoveEnum::FORWARD;
+        distance = pDistance;
     }
 
-    void turnRight(){
+    void turnRight(float angle){
+        turnRightNonBlocking(angle);
+        waitEndMove();
+    }
+
+    void turnRightNonBlocking(float angle){
         currentMove = MoveEnum::TURN_RIGHT;
+        distance = angle*DEG_TO_RAD*RAYON;
     }
 
-    void turnLeft(){
+    void turnLeft(float angle){
+        turnLeftNonBlocking(angle);
+        waitEndMove();
+    }
+
+    void turnLeftNonBlocking(float angle){
         currentMove = MoveEnum::TURN_LEFT;
+        distance = angle*DEG_TO_RAD*RAYON;
+        waitEndMove();
     }
 
-    void uTurn(){
-        currentMove = MoveEnum::UTURN;
+    void waitEndMove(){
+        while(currentMove != MoveEnum::NONE){
+            runMovementController();
+        }
     }
 
     void stop(){
         WHEEL_PID::setPIDDesiredPulse(0, 0);
         WHEEL_PID::reset();
-        lastMove = currentMove;
         currentMove = MoveEnum::NONE;
         WHEEL_PID::resetCoveredDistance();
     }
@@ -56,13 +75,13 @@ namespace Movement {
     void runMovementController(){
         switch(currentMove){
             case MoveEnum::TURN_RIGHT: {
-                float remaining = TURN_DISTANCE_RIGHT - WHEEL_PID::getRightCoveredDistance();
+                float remaining = distance - WHEEL_PID::getRightCoveredDistance();
                 if (remaining <= 0.1f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
                         remaining,
-                        TURN_DISTANCE_RIGHT,
+                        distance,
                         ACCEL_TURN_DISTANCE,
                         MIN_TURNING_SPEED,
                         MAX_TURNING_SPEED
@@ -72,13 +91,13 @@ namespace Movement {
                 break;
             }
             case MoveEnum::TURN_LEFT: {
-                float remaining = TURN_DISTANCE_LEFT - WHEEL_PID::getLeftCoveredDistance();
+                float remaining = distance - WHEEL_PID::getLeftCoveredDistance();
                 if (remaining <= 0.1f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
                         remaining,
-                        TURN_DISTANCE_LEFT,
+                        distance,
                         ACCEL_TURN_DISTANCE,
                         MIN_TURNING_SPEED,
                         MAX_TURNING_SPEED
@@ -88,34 +107,18 @@ namespace Movement {
                 break;
             }
             case MoveEnum::FORWARD: {
-                float remaining = FORWARD_DISTANCE - WHEEL_PID::getCoveredDistance();
+                float remaining = distance - WHEEL_PID::getCoveredDistance();
                 if (remaining <= 0.2f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
                         remaining,
-                        FORWARD_DISTANCE,
+                        distance,
                         ACCEL_FORWARD_DISTANCE,
                         MIN_STRAIGHT_SPEED,
                         MAX_STRAIGHT_SPEED
                     );
                     WHEEL_PID::setPIDDesiredPulse(speed, speed);
-                }
-                break;
-            }
-            case MoveEnum::UTURN: {
-                float remaining = UTURN_DISTANCE - WHEEL_PID::getRightCoveredDistance();
-                if (remaining <= 0.2f) {
-                    stop();
-                } else {
-                    float speed = computeScaledSpeed(
-                        remaining,
-                        UTURN_DISTANCE,
-                        ACCEL_FORWARD_DISTANCE,
-                        MIN_TURNING_SPEED,
-                        MAX_TURNING_SPEED
-                    );
-                    WHEEL_PID::setPIDDesiredPulse(-speed, speed);
                 }
                 break;
             }
@@ -129,8 +132,5 @@ namespace Movement {
 
     MoveEnum getCurrentMove(){
         return currentMove;
-    }
-    MoveEnum getLastMove(){
-        return lastMove;
     }
 }
