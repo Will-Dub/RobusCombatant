@@ -2,7 +2,8 @@
 
 namespace Movement {
     MoveEnum currentMove;
-    float distance;
+    float goalDistance;
+    float currentAngle;
 
     void init(){
         WHEEL_PID::init();
@@ -16,8 +17,9 @@ namespace Movement {
     }
 
     void moveForwardNonBlocking(float pDistance){
+        WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::FORWARD;
-        distance = pDistance;
+        goalDistance = pDistance;
     }
 
     void turnRight(float angle){
@@ -26,8 +28,9 @@ namespace Movement {
     }
 
     void turnRightNonBlocking(float angle){
+        WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_RIGHT;
-        distance = angle*DEG_TO_RAD*RAYON;
+        goalDistance = angle*DEG_TO_RAD*RAYON;
     }
 
     void turnLeft(float angle){
@@ -36,8 +39,9 @@ namespace Movement {
     }
 
     void turnLeftNonBlocking(float angle){
+        WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_LEFT;
-        distance = angle*DEG_TO_RAD*RAYON;
+        goalDistance = angle*DEG_TO_RAD*RAYON;
         waitEndMove();
     }
 
@@ -51,7 +55,6 @@ namespace Movement {
         WHEEL_PID::setPIDDesiredPulse(0, 0);
         WHEEL_PID::reset();
         currentMove = MoveEnum::NONE;
-        WHEEL_PID::resetCoveredDistance();
     }
 
     float computeScaledSpeed(float remainingDistance, float totalDistance,
@@ -75,13 +78,14 @@ namespace Movement {
     void runMovementController(){
         switch(currentMove){
             case MoveEnum::TURN_RIGHT: {
-                float remaining = distance - WHEEL_PID::getRightCoveredDistance();
-                if (remaining <= 0.1f) {
+                float coveredDistance = WHEEL_PID::getRightCoveredDistance();
+                float remainingDistance = goalDistance - coveredDistance;
+                if (remainingDistance <= 0.1f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
-                        remaining,
-                        distance,
+                        remainingDistance,
+                        goalDistance,
                         ACCEL_TURN_DISTANCE,
                         MIN_TURNING_SPEED,
                         MAX_TURNING_SPEED
@@ -91,13 +95,14 @@ namespace Movement {
                 break;
             }
             case MoveEnum::TURN_LEFT: {
-                float remaining = distance - WHEEL_PID::getLeftCoveredDistance();
-                if (remaining <= 0.1f) {
+                float coveredDistance = WHEEL_PID::getRightCoveredDistance();
+                float remainingDistance = goalDistance - coveredDistance;
+                if (remainingDistance <= 0.1f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
-                        remaining,
-                        distance,
+                        remainingDistance,
+                        goalDistance,
                         ACCEL_TURN_DISTANCE,
                         MIN_TURNING_SPEED,
                         MAX_TURNING_SPEED
@@ -107,13 +112,13 @@ namespace Movement {
                 break;
             }
             case MoveEnum::FORWARD: {
-                float remaining = distance - WHEEL_PID::getCoveredDistance();
-                if (remaining <= 0.2f) {
+                float remainingDistance = goalDistance - WHEEL_PID::getCoveredDistance();
+                if (remainingDistance <= 0.2f) {
                     stop();
                 } else {
                     float speed = computeScaledSpeed(
-                        remaining,
-                        distance,
+                        remainingDistance,
+                        goalDistance,
                         ACCEL_FORWARD_DISTANCE,
                         MIN_STRAIGHT_SPEED,
                         MAX_STRAIGHT_SPEED
@@ -132,5 +137,13 @@ namespace Movement {
 
     MoveEnum getCurrentMove(){
         return currentMove;
+    }
+
+    void resetCurrentAngle(){
+        currentAngle = 0;
+    }
+
+    float getCurrentAngle(){
+        return fmod(currentAngle, 360.0f);
     }
 }

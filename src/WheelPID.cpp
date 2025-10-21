@@ -119,7 +119,7 @@ namespace WHEEL_PID{
 
     // Retourne la distance en cm
     float getCoveredDistance(){
-        float combinedAveragePulse = (leftTotalPulse + rightTotalPulse) / 2;
+        float combinedAveragePulse = (abs(leftTotalPulse) + abs(rightTotalPulse)) / 2;
         float distance_cm = abs(combinedAveragePulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
         return distance_cm;
     }
