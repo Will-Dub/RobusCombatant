@@ -1,6 +1,6 @@
 #include "Quille.h"
 
-QuilleState currentState;
+QuilleState currentState = QuilleState::FINDING;
 
 void actionQuille(){
     // Avancer 12.5cm
@@ -34,23 +34,28 @@ void actionQuille(){
         return;
     }
 
-    // Quand capteur allume: arrête de tourner en rond, tourne vers objet
-    if(getIRDetection() == DETECTION::DetectionState::DETECT_LEFT){
-        Movement::turnLeft(45);
-    }else if(getIRDetection() == DETECTION::DetectionState::DETECT_RIGHT){
-        Movement::turnRight(45);
+    // Phase 2: Quand capteur allume: arrête de tourner en rond, tourne vers objet
+    if (currentState == QuilleState::ALIGNING) {
+        DETECTION::DetectionState ir = getIRDetection();
+        if (ir == DETECTION::DetectionState::DETECT_LEFT) {
+            Movement::turnLeft(45);
+        } else if (ir == DETECTION::DetectionState::DETECT_RIGHT) {
+            Movement::turnRight(45);
+        }
+
+        waitEndMoveAligning();
     }
-    waitEndMoveAligning();
 
-    if(currentState == QuilleState::FINDING){
-        // TODO quoi faire si on perd la quille(retour?)
+    // Phase 3: Avance vers objet jusqu'a ce qu'il tombe
+    if (currentState == QuilleState::GOING_TO) {
+        Movement::moveForward(FORWARD_GOING_TO_MAX);
+        waitEndMoveGoingTo();
     }
 
-    // Avance vers objet jusqu'a ce qu'il tombe
-    Movement::moveForward(25);
-    waitEndMoveGoingTo();
-
-    // Retour
+    // Phase 4: Retour
+    if (currentState == QuilleState::GOING_BACK) {
+        // TODO: retourner à la ligne blanche ici
+    }
 }
 
 void waitEndMoveFinding(){
@@ -72,7 +77,7 @@ void waitEndMoveAligning(){
 
     Movement::stop();
 
-    if(getIRDetection() != DETECTION::DETECT_FRONT){
+    if(getIRDetection() == DETECTION::DETECT_FRONT){
         currentState = QuilleState::GOING_TO;
     }
 }
@@ -84,13 +89,13 @@ void waitEndMoveGoingTo(){
 
     Movement::stop();
 
-    if(getIRDetection() != DETECTION::DETECT_NONE){
+    if(getIRDetection() == DETECTION::DETECT_NONE){
         currentState = QuilleState::GOING_BACK;
     }
 }
 
 DETECTION::DetectionState getIRDetection(){
     bool isLeftOn = digitalRead(IR_LEFT_PIN);
-    bool isRightOn = digitalRead(IR_LEFT_PIN);
+    bool isRightOn = digitalRead(IR_RIGHT_PIN);
     return DETECTION::getDetection(isLeftOn, isRightOn);
 }
