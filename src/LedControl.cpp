@@ -63,6 +63,14 @@ void bLedOff(){
     digitalWrite(BLED,LOW);
 }
 
+/************************* 
+    PLUS BAS EST SEULEMENT POUR LA DANCE!!
+    POUR LE SUIVEUR DE LIGNES, LES FONCTIONS PLUS HAUT SONT UTILES.
+ *************************/
+
+
+
+
 //fait alterner DEL Jaune et Rouge
 void flashYR(int length){
     int count = 0;

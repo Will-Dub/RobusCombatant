@@ -1,5 +1,5 @@
-//permet l'appel des fonctions pour contrôller les DELs
-
+//permet l'appel des fonctions pour contrôler les DELs
+//inclure ce fichier lorsque vous voulez contrôler les DELs
 void LEDInit();
 void yLedOn();
 void yLedOff();
