@@ -1,7 +1,7 @@
 #include "Line.h"
 #include <Arduino.h>
 
-unsigned char ucStation = NONE;  // CURRENT STATION, MIGHT BECOME A GLOBAL VARIABLE WHEN WE CODE COLOR DETECTION
+StationEnum ucStation = NONE;  // CURRENT STATION, MIGHT BECOME A GLOBAL VARIABLE WHEN WE CODE COLOR DETECTION
 
 void vSetupLineSensors(){
     pinMode(LEFT_SENSOR_PIN, INPUT);

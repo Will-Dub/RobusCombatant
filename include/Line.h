@@ -7,9 +7,9 @@
 #define MIDDLE_SENSOR_PIN A14
 #define RIGHT_SENSOR_PIN A15
 
-constexpr int NONE = 0;
-constexpr int WALL_DODGE = 1;
 constexpr int WHITE_THRESHOLD = 200;
+
+enum StationEnum { NONE, WALL_DODGE };
 
 void vSetupLineSensors();
 unsigned char ucReadLineSensors();

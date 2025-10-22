@@ -1,3 +1,5 @@
+#pragma once
+
 //permet l'appel des fonctions pour contrôler les DELs
 //inclure ce fichier lorsque vous voulez contrôler les DELs
 void LEDInit();

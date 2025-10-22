@@ -1,5 +1,4 @@
-#ifndef WHEEL_PID_H
-#define WHEEL_PID_H
+#pragma once
 
 #include <LibRobus.h>
 #include <Arduino.h>
@@ -24,4 +23,3 @@ namespace WHEEL_PID{
     void resetCoveredDistance();
     float pulseToDistance(int pulse);
 }
-#endif

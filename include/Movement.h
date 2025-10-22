@@ -1,5 +1,4 @@
-#ifndef MOVEMENT_H
-#define MOVEMENT_H
+#pragma once
 
 #include <Arduino.h>
 #include <LibRobus.h>
@@ -46,4 +45,3 @@ namespace Movement {
     void setOffset(LineOffsetEnum mode);
     MoveEnum getCurrentMove();
 }
-#endif
