@@ -30,6 +30,11 @@ namespace WHEEL_PID{
         lastRightError = 0;
     }
 
+    void stopMotor(){
+        MOTOR_SetSpeed(LEFT, 0);
+        MOTOR_SetSpeed(RIGHT, 0);
+    }
+
     void runPIDController() {
         unsigned long currentTime = millis();
         float elapsedTimeSec = (currentTime - previousTime) / 1000.0f;

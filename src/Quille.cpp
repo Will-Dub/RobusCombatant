@@ -1,148 +1,68 @@
 #include "Quille.h"
 
-QuilleState currentState = QuilleState::FINDING;
-
-MovementRecord moveHistory[MAX_MOVES];
-int moveCount = 0;
-
-void saveMove(Movement::MoveEnum type, float value) {
-    if (moveCount < MAX_MOVES) {
-        moveHistory[moveCount++] = { type, value };
-    }
-}
-
-void moveForwardLog(float distance) {
-    saveMove(Movement::MoveEnum::FORWARD, distance);
-    Movement::moveForward(distance);
-}
-
-void moveForwardNonBlockingLog(float distance) {
-    saveMove(Movement::MoveEnum::FORWARD, distance);
-    Movement::moveForwardNonBlocking(distance);
-}
-
-void turnLeftLog(float angle) {
-    saveMove(Movement::MoveEnum::TURN_LEFT, angle);
-    Movement::turnLeft(angle);
-}
-
-void turnRightLog(float angle) {
-    saveMove(Movement::MoveEnum::TURN_RIGHT, angle);
-    Movement::turnRight(angle);
-}
-
-void goBackToStart() {
-    for (int i = moveCount - 1; i >= 0; i--) {
-        MovementRecord m = moveHistory[i];
-
-        switch (m.type) {
-            case Movement::MoveEnum::FORWARD:
-                // Retourne sur la même distance (méthode simple sans moveBackward)
-                Movement::turnRight(180);
-                Movement::moveForward(m.distance);
-                Movement::turnRight(180);
-                break;
-
-            case Movement::MoveEnum::TURN_LEFT:
-                Movement::turnRight(m.distance);
-                break;
-
-            case Movement::MoveEnum::TURN_RIGHT:
-                Movement::turnLeft(m.distance);
-                break;
-            default:
-                break;
-        }
-        Movement::stop();
-    }
-    moveCount = 0; // Réinitialise l’historique
-}
+bool isQuilleFound = false;
+float distanceTourner = 0;
+float distanceAvancer = 0;
 
 void actionQuille(SRF04Sonar& sonar){
-    // Avancer 12.5cm
-    Movement::moveForward(12.5);
+    // Scan pour la quille
+    Movement::turnRightNonBlocking(360, 500, 3000);
+    waitEndMoveFinding(sonar);
 
-    // Faire un carré jusqu'a ce qu'il trouve un objet
-    while(currentState == QuilleState::FINDING){
-        turnRightLog(90); waitEndMoveFinding(sonar);
-        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding(sonar);
-
-        turnRightLog(90); waitEndMoveFinding(sonar);
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
-
-        turnRightLog(90); waitEndMoveFinding(sonar);
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
-
-        turnRightLog(90); waitEndMoveFinding(sonar);
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
-
-        turnRightLog(90); waitEndMoveFinding(sonar);
-        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding(sonar);
-        break;
-    }
-
-    // Vérifie si la quille n'a pas été trouvé
-    if(currentState == QuilleState::FINDING){
-        // Tourne à gauche pour est face à la ligne
-        Movement::turnLeft(90);
+    // Vérifie si la quille a été trouvé
+    if(!isQuilleFound){
         return;
     }
 
-    // Phase 2: Avance vers objet jusqu'a ce qu'il tombe
-    if (currentState == QuilleState::GOING_TO) {
-        moveForwardLog(FORWARD_GOING_TO_MAX);
-        waitEndMoveGoingTo(sonar);
-    }
+    // Phase 2: Avance vers la quille
+    Movement::moveForwardNonBlocking(MAX_QUILLE_DISTANCE);
+    waitEndMoveGoingTo(sonar);
 
     // Phase 3: Retour
-    if (currentState == QuilleState::GOING_BACK) {
-        goBackToStart();
-        currentState = QuilleState::FINDING; // prêt pour recommencer
-    }
+    goBackToStart();
 }
 
-void scanLeft(SRF04Sonar& sonar) {
-    // Tourne à gauche et cherche
-    turnLeftLog(180);
-    waitEndMoveFinding(sonar);
+void goBackToStart(){
+    // Fait un 180
+    Movement::turnRight(180);
 
-    if (currentState != QuilleState::FINDING) {
-        return;
-    }
+    // Retourne au milieu
+    Movement::moveForward(distanceAvancer);
 
-    // Retourne droit
-    turnRightLog(180);
-    waitEndMoveFinding(sonar);
+    // Fini le tour de 360
+    float angleRestant = 360.0f - Movement::distanceToAngle(distanceTourner);
+    Movement::turnRight(angleRestant);
+
+    // Reset
+    isQuilleFound = false;
+    distanceTourner = 0;
+    distanceAvancer = 0;
 }
 
 void waitEndMoveFinding(SRF04Sonar& sonar){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && sonar.getRange() > TRIGGER_RANGE){
+    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE){
         Movement::runMovementController();
-    }
 
-    Movement::stop();
-
-    // Vérifie si la quille est trouvé
-    if(sonar.getRange() <= TRIGGER_RANGE){
-        currentState = QuilleState::GOING_TO;
-
-        // Sauvegarde la distance parcouru si il trouve la quille
-        moveHistory[moveCount].distance = WHEEL_PID::getCoveredDistance();
+        float distance = sonar.getRange();
+        if (distance <= MAX_QUILLE_DISTANCE) {
+            isQuilleFound = true;
+            distanceTourner = WHEEL_PID::getRightCoveredDistance();
+            Movement::stop();
+            break;
+        }
     }
 }
 
 void waitEndMoveGoingTo(SRF04Sonar& sonar){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && sonar.getRange() <= TRIGGER_RANGE){
+    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE){
         Movement::runMovementController();
-    }
 
-    Movement::stop();
-
-    // Vérifie si la quille est tombé
-    if(sonar.getRange() > TRIGGER_RANGE){
-        currentState = QuilleState::GOING_BACK;
-
-        // Sauvegarde la distance parcouru
-        moveHistory[moveCount].distance = WHEEL_PID::getCoveredDistance();
+        float distance = sonar.getRange();
+        if (distance > MAX_QUILLE_DISTANCE) {
+            // La quille n’est plus visible
+            distanceAvancer = WHEEL_PID::getCoveredDistance();
+            Movement::stop();
+            break;
+        }
     }
 }

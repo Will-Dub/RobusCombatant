@@ -16,6 +16,7 @@ namespace WHEEL_PID{
     void init();
     void setPIDDesiredPulse(int, int);
     void runPIDController();
+    void stopMotor();
     void reset();
     float getCoveredDistance();
     float getRightCoveredDistance();
