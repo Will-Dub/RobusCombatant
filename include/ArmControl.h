@@ -2,6 +2,8 @@
 
 void armsInit();
 void armsOFF();
+void resetLeftArm();
+void resetRightArm();
 void leftArmUp();
 void leftArmDown();
 void leftArmFront();
