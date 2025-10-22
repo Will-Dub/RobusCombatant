@@ -58,26 +58,26 @@ void goBackToStart() {
     moveCount = 0; // Réinitialise l’historique
 }
 
-void actionQuille(){
+void actionQuille(SRF04Sonar& sonar){
     // Avancer 12.5cm
     Movement::moveForward(12.5);
 
     // Faire un carré jusqu'a ce qu'il trouve un objet
     while(currentState == QuilleState::FINDING){
-        turnRightLog(90); waitEndMoveFinding();
-        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding();
+        turnRightLog(90); waitEndMoveFinding(sonar);
+        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding(sonar);
 
-        turnRightLog(90); waitEndMoveFinding();
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding();
+        turnRightLog(90); waitEndMoveFinding(sonar);
+        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
 
-        turnRightLog(90); waitEndMoveFinding();
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding();
+        turnRightLog(90); waitEndMoveFinding(sonar);
+        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
 
-        turnRightLog(90); waitEndMoveFinding();
-        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding();
+        turnRightLog(90); waitEndMoveFinding(sonar);
+        moveForwardNonBlockingLog(FORWARD_DISTANCE * 2); waitEndMoveFinding(sonar);
 
-        turnRightLog(90); waitEndMoveFinding();
-        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding();
+        turnRightLog(90); waitEndMoveFinding(sonar);
+        moveForwardNonBlockingLog(FORWARD_DISTANCE); waitEndMoveFinding(sonar);
         break;
     }
 
@@ -88,87 +88,47 @@ void actionQuille(){
         return;
     }
 
-    // Phase 2: Quand capteur allume: arrête de tourner en rond, tourne vers objet
-    if (currentState == QuilleState::ALIGNING) {
-        DETECTION::DetectionState ir = getIRDetection();
-
-        // Vérifie si la quille est à gauche
-        if (ir == DETECTION::DetectionState::DETECT_LEFT) {
-            // Tourne à gauche
-            turnLeftLog(45);
-        }
-        // Vérifie si la quille est à droite
-        else if (ir == DETECTION::DetectionState::DETECT_RIGHT) {
-            // Tourne à droite
-            turnRightLog(45);
-        }
-
-        waitEndMoveAligning();
-    }
-
-    // Phase 3: Avance vers objet jusqu'a ce qu'il tombe
+    // Phase 2: Avance vers objet jusqu'a ce qu'il tombe
     if (currentState == QuilleState::GOING_TO) {
         moveForwardLog(FORWARD_GOING_TO_MAX);
-        waitEndMoveGoingTo();
+        waitEndMoveGoingTo(sonar);
     }
 
-    // Phase 4: Retour
+    // Phase 3: Retour
     if (currentState == QuilleState::GOING_BACK) {
         goBackToStart();
         currentState = QuilleState::FINDING; // prêt pour recommencer
     }
 }
 
-void waitEndMoveFinding(){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && getIRDetection() == DETECTION::DETECT_NONE){
+void waitEndMoveFinding(SRF04Sonar& sonar){
+    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && sonar.getRange() > TRIGGER_RANGE){
         Movement::runMovementController();
     }
 
     Movement::stop();
 
     // Vérifie si la quille est trouvé
-    if(getIRDetection() != DETECTION::DETECT_NONE){
-        currentState = QuilleState::ALIGNING;
+    if(sonar.getRange() <= TRIGGER_RANGE){
+        currentState = QuilleState::GOING_TO;
 
         // Sauvegarde la distance parcouru si il trouve la quille
         moveHistory[moveCount].distance = WHEEL_PID::getCoveredDistance();
     }
 }
 
-void waitEndMoveAligning(){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && getIRDetection() != DETECTION::DETECT_FRONT){
-        Movement::runMovementController();
-    }
-
-    Movement::stop();
-
-    // Vérifie si la quille est devant
-    if(getIRDetection() == DETECTION::DETECT_FRONT){
-        currentState = QuilleState::GOING_TO;
-
-        // Sauvegarde la distance parcouru
-        moveHistory[moveCount].distance = WHEEL_PID::getCoveredDistance();
-    }
-}
-
-void waitEndMoveGoingTo(){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && getIRDetection() != DETECTION::DETECT_NONE){
+void waitEndMoveGoingTo(SRF04Sonar& sonar){
+    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && sonar.getRange() <= TRIGGER_RANGE){
         Movement::runMovementController();
     }
 
     Movement::stop();
 
     // Vérifie si la quille est tombé
-    if(getIRDetection() == DETECTION::DETECT_NONE){
+    if(sonar.getRange() > TRIGGER_RANGE){
         currentState = QuilleState::GOING_BACK;
 
         // Sauvegarde la distance parcouru
         moveHistory[moveCount].distance = WHEEL_PID::getCoveredDistance();
     }
-}
-
-DETECTION::DetectionState getIRDetection(){
-    bool isLeftOn = digitalRead(IR_LEFT_PIN);
-    bool isRightOn = digitalRead(IR_RIGHT_PIN);
-    return DETECTION::getDetection(isLeftOn, isRightOn);
 }
