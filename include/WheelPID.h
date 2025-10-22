@@ -8,10 +8,10 @@ namespace WHEEL_PID{
     constexpr float PULSE_PER_TURN = 3200.0f;
     constexpr float POUCE_TO_CM = 2.54f;
     constexpr float ROUE_DIAMETRE = 3.0f;
-    const float kp = 0.02f;
-    const float ki = 0.001f;
-    const float kd = 0.0005f;
-    const float maxIntegral = 100.0f;
+    const float kp = 0.01f;
+    const float ki = 0.005f;
+    const float kd = 0.001f;
+    const float maxIntegral = 500.0f;
 
     void init();
     void setPIDDesiredPulse(int, int);

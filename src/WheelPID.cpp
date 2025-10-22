@@ -29,12 +29,21 @@ namespace WHEEL_PID{
     void stopMotor(){
         MOTOR_SetSpeed(LEFT, 0);
         MOTOR_SetSpeed(RIGHT, 0);
+        previousTime = millis();
+        iLeftError = 0;
+        iRightError = 0;
+        lastLeftError = 0;
+        lastRightError = 0;
     }
 
     void runPIDController() {
         unsigned long currentTime = millis();
         float elapsedTimeSec = (currentTime - previousTime) / 1000.0f;
 
+        if (leftDesiredPulse == 0 && rightDesiredPulse == 0) {
+            stopMotor();
+            return;
+        }
         if (elapsedTimeSec <= 0.0f) return;
         
         float leftMotorCalculatedPulse = (abs(leftDesiredPulse) * elapsedTimeSec);
@@ -137,6 +146,7 @@ namespace WHEEL_PID{
     }
 
     void resetCoveredDistance(){
+        previousTime = millis();
         leftTotalPulse = 0;
         rightTotalPulse = 0;
     }
