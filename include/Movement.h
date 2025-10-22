@@ -17,11 +17,6 @@ namespace Movement {
 
     enum MoveEnum { FORWARD, TURN_LEFT, TURN_RIGHT, NONE };
 
-    struct MovementParams {
-        int maxSpeed = MAX_TURNING_SPEED;
-        int minSpeed = MIN_TURNING_SPEED;
-    };
-
     //function prototypes
     void init();
 
