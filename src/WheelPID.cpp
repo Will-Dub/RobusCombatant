@@ -24,10 +24,6 @@ namespace WHEEL_PID{
     void setPIDDesiredPulse(int newLeftDesiredPulse, int newRightDesiredPulse){
         leftDesiredPulse = newLeftDesiredPulse;
         rightDesiredPulse = newRightDesiredPulse;
-        iLeftError = 0;
-        iRightError = 0;
-        lastLeftError = 0;
-        lastRightError = 0;
     }
 
     void stopMotor(){
@@ -125,18 +121,19 @@ namespace WHEEL_PID{
     // Retourne la distance en cm
     float getCoveredDistance(){
         float combinedAveragePulse = (abs(leftTotalPulse) + abs(rightTotalPulse)) / 2;
-        float distance_cm = abs(combinedAveragePulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        return pulseToDistance(combinedAveragePulse);
     }
 
     float getRightCoveredDistance() {
-        float distance_cm = abs(rightTotalPulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        return pulseToDistance(rightTotalPulse);
     }
 
     float getLeftCoveredDistance(){
-        float distance_cm = abs(leftTotalPulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        return pulseToDistance(leftTotalPulse);
+    }
+
+    float pulseToDistance(int pulse) {
+        return abs(pulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
     }
 
     void resetCoveredDistance(){
