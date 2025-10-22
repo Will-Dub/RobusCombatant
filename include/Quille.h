@@ -16,3 +16,4 @@ constexpr float TRIGGER_RANGE = 10.0f;
 void actionQuille(SRF04Sonar& sonar);
 void waitEndMoveFinding(SRF04Sonar& sonar);
 void waitEndMoveGoingTo(SRF04Sonar& sonar);
+void scanLeft(SRF04Sonar& sonar);

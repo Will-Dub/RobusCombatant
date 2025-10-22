@@ -101,6 +101,20 @@ void actionQuille(SRF04Sonar& sonar){
     }
 }
 
+void scanLeft(SRF04Sonar& sonar) {
+    // Tourne à gauche et cherche
+    turnLeftLog(180);
+    waitEndMoveFinding(sonar);
+
+    if (currentState != QuilleState::FINDING) {
+        return;
+    }
+
+    // Retourne droit
+    turnRightLog(180);
+    waitEndMoveFinding(sonar);
+}
+
 void waitEndMoveFinding(SRF04Sonar& sonar){
     while(Movement::getCurrentMove() != Movement::MoveEnum::NONE && sonar.getRange() > TRIGGER_RANGE){
         Movement::runMovementController();
