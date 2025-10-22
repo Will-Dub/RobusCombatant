@@ -6,17 +6,20 @@
 
 //fichier contenant la dance et les mouvements du robot dans l'ordre
 
-//temps de délais secondes à millisecondes. //ajouter timer pour que les mouvements se fassent pendant le délai.
+//temps de délais secondes à microsecondes.
 void delayS(int secs){
-    int msecs = secs * 1000;
+    int msecs = secs * 1000000;
     delay(msecs);
 }
 
+//!!!!MAKE SURE THE DELAYS IN THE BLINKING LED CODE DOESN'T COUNT AS DELAYS BEFORE THE NEXT MOVE, 
+//SO IT DOESN'T DOUBLE HOW LONG IT TAKES BEFORE DOING THE NEXT MOVE (probably does actually, 
+//same way delayS works). But easy fix if yes.
 
 void dance(){
     //Mouvement 1
     bothArmDown();
-    delayS(3);
+    delayS(3);   //adust the time here, depending on how long the robot takes to bootup so it syncs with the dance.
 
     //Mouvement 2
     leftArmUp();
@@ -255,162 +258,140 @@ void dance(){
     delayS(4);
     
     //Mouvement 47
+    /*move to position 2*/
     rightArmFront();
     delayS(4);
     
     //Mouvement 48
+    /*move to position 3*/
     leftArmFront();
     delayS(4);
     
     //Mouvement 49
+    /*move to position 4*/
     rightArmUp();
     delayS(4);
 
-    //movements after this are not yet documented by Laurent in the excel
-
-
+    //movements after this were documented by Samue; in the excel
 
     //Mouvement 50
-
+    /*move to position 1*/
+    bothArmUp();
+    randomLed(2);
+    delayS(2);
 
     //Mouvement 51
+    /*move to position 2*/
+    rightArmFront();
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 52
+    /*move to position 3*/
+    bothArmFront();
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 53
-    
+    /*move to position 4*/
+    rightArmUp();
+    randomLed(3);
+    delayS(3);
+
     //Mouvement 54
+    /*move to position 1*/
+    /*do a 360*/
+    bothArmUp();
+    randomLed(3);
+    delayS(3);
 
     //Mouvement 55
-    
+    /*move to position 2*/
+    rightArmFront();
+    randomLed(3);
+    delayS(3);
+
     //Mouvement 56
+    /*move to position 3*/
+    bothArmFront();
+    randomLed(3);
+    delayS(3);
     
     //Mouvement 57
+    /*move to position 4*/
+    rightArmUp();
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 58
-    
+    /*move to position 1*/
+    /*do a 360*/
+    bothArmUp();
+    randomLed(3);
+    delayS(3);
+
     //Mouvement 59
+    /*move to position 2*/
+    rightArmFront();
+    randomLed(2);
+    delayS(2);
 
     //Mouvement 60
+    /*move to position 3*/
+    bothArmFront();
+    randomLed(3);
+    delayS(3);
 
     //Mouvement 61
+    /*move to position 4*/
+    rightArmUp();
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 62
-    
+    /*move to position 1*/
+    /*do a 360*/
+    bothArmUp();
+    randomLed(3);
+    delayS(3);
+
     //Mouvement 63
-    
+    /*move to position 2*/
+    rightArmFront();
+    randomLed(2);
+    delayS(2);
+
     //Mouvement 64
+    /*move to position 3*/
+    /*do a 360*/
+    bothArmFront();
+    randomLed(3);
+    delayS(3);
 
     //Mouvement 65
+    /*move to position 4*/
+    rightArmUp();
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 66
+    /*move to position 1*/
+    /*do a 360*/
+    bothArmUp();
+    randomLed(3);
+    delayS(3);
     
     //Mouvement 67
+    /*move to position 0*/
+    randomLed(2);
+    delayS(2);
     
     //Mouvement 68
-    
+    /*do a 1080*/
+    randomLed(2);
+    delayS(2);
+
     //Mouvement 69
-
-    //Mouvement 70
-
-    //Mouvement 71
-    
-    //Mouvement 72
-    
-    //Mouvement 73
-    
-    //Mouvement 74
-
-    //Mouvement 75
-    
-    //Mouvement 76
-    
-    //Mouvement 77
-    
-    //Mouvement 78
-    
-    //Mouvement 79
-
-    //Mouvement 80
-
-    //Mouvement 81
-    
-    //Mouvement 82
-    
-    //Mouvement 83
-    
-    //Mouvement 84
-
-    //Mouvement 85
-    
-    //Mouvement 86
-    
-    //Mouvement 87
-    
-    //Mouvement 88
-    
-    //Mouvement 89
-    
-    //Mouvement 90
-
-    //Mouvement 91
-    
-    //Mouvement 92
-    
-    //Mouvement 93
-    
-    //Mouvement 94
-
-    //Mouvement 95
-    
-    //Mouvement 96
-    
-    //Mouvement 97
-    
-    //Mouvement 98
-    
-    //Mouvement 99
-
-    //Mouvement 100
-
-    //Mouvement 101
-    
-    //Mouvement 102
-    
-    //Mouvement 103
-    
-    //Mouvement 104
-
-    //Mouvement 105
-    
-    //Mouvement 106
-    
-    //Mouvement 107
-    
-    //Mouvement 108
-    
-    //Mouvement 109
-
-    //Mouvement 110
-
-    //Mouvement 111
-    
-    //Mouvement 112
-    
-    //Mouvement 113
-    
-    //Mouvement 114
-
-    //Mouvement 115
-    
-    //Mouvement 116
-    
-    //Mouvement 117
-    
-    //Mouvement 118
-    
-    //Mouvement 119
-
-    //Mouvement 120
+    //FIN ICI!!!
 
 }

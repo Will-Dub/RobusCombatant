@@ -11,8 +11,8 @@ const int RLED = 49;
 const int GLED = 50;
 const int BLED = 51;
 
-//ADJUST DELAYS FOR THE FUTURE!!!! -> should be fine now (assuming the time is in milliseconds)
-const int flashDelay = 250; //durée d'un flash
+//ADJUST DELAYS FOR THE FUTURE!!!! -> should be fine now
+const int flashDelay = 250000; //durée d'un flash
 
 //initialise les DELs
 void LEDInit(){
@@ -66,7 +66,7 @@ void bLedOff(){
 //fait alterner DEL Jaune et Rouge
 void flashYR(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -83,7 +83,7 @@ void flashYR(int length){
 //fait alterner DEL Jaune et Verte
 void flashYG(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -100,7 +100,7 @@ void flashYG(int length){
 //fait alterner DEL Jaune et Bleue
 void flashYB(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(YLED,HIGH);
@@ -117,7 +117,7 @@ void flashYB(int length){
 //fait alterner DEL Rouge et Verte
 void flashRG(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(RLED,HIGH);
@@ -134,7 +134,7 @@ void flashRG(int length){
 //fait alterner DEL Rouge et Bleue
 void flashRB(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(RLED,HIGH);
@@ -151,7 +151,7 @@ void flashRB(int length){
 //fait alterner DEL Verte et Bleue
 void flashGB(int length){
     int count = 0;
-    int counterMax = length * 4;
+    int counterMax = length * 2;
     while(count < counterMax)  
     {
         digitalWrite(GLED,HIGH);
