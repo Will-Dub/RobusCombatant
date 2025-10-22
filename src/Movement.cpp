@@ -1,15 +1,15 @@
 #include "Movement.h"
 
 namespace Movement {
-    MoveEnum currentMove;
-    float goalDistance;
-    int maxSpeed;
-    int minSpeed;
+    MoveEnum currentMove = MoveEnum::NONE;
+    float goalDistance = 0;
+    int maxSpeed = 0;
+    int minSpeed = 0;
+    LineOffsetEnum offsetMode = LineOffsetEnum::AUCUN;
 
     void init(){
         WHEEL_PID::init();
         WHEEL_PID::setPIDDesiredPulse(0, 0);
-        currentMove = MoveEnum::NONE;
     }
 
     void moveForward(float pDistance, int pMinSpeed, int pMaxSpeed) {
@@ -20,6 +20,7 @@ namespace Movement {
     void moveForwardNonBlocking(float pDistance, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::FORWARD;
+        offsetMode = LineOffsetEnum::AUCUN;
         goalDistance = pDistance;
         minSpeed = pMinSpeed;
         maxSpeed = pMaxSpeed;
@@ -138,7 +139,21 @@ namespace Movement {
                         minSpeed,
                         maxSpeed
                     );
-                    WHEEL_PID::setPIDDesiredPulse(speed, speed);
+
+                    float leftSpeed = speed;
+                    float rightSpeed = speed;
+
+                    // Ajoute l'offset
+                    switch(offsetMode){
+                        case LineOffsetEnum::PETIT_GAUCHE: leftSpeed  *= 0.95f; break;
+                        case LineOffsetEnum::GRAND_GAUCHE: leftSpeed  *= 0.85f; break;
+                        case LineOffsetEnum::PETIT_DROITE: rightSpeed *= 0.95f; break;
+                        case LineOffsetEnum::GRAND_DROITE: rightSpeed *= 0.85f; break;
+                        case LineOffsetEnum::AUCUN: break;
+                        default: break;
+                    }
+
+                    WHEEL_PID::setPIDDesiredPulse(leftSpeed, rightSpeed);
                 }
                 break;
             }
@@ -156,5 +171,9 @@ namespace Movement {
 
     MoveEnum getCurrentMove(){
         return currentMove;
+    }
+
+    void setOffset(LineOffsetEnum mode){
+        offsetMode = mode;
     }
 }

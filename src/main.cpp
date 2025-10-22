@@ -14,11 +14,16 @@ void setup() {
     BoardInit();
     Movement::init();
     Serial.begin(115200);
-    pinMode(ECHO_PIN, INPUT);
-    pinMode(TRIG_PIN, OUTPUT);
+    vSetupLineSensors();
     sonar.init(ECHO_PIN, TRIG_PIN);
 }
 
 void loop() {
+    if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
+        Movement::moveForwardNonBlocking(99999);
+    }
 
+    unsigned int ucSensorState = ucReadLineSensors();
+    vDecisionTime(ucSensorState);
+    Movement::runMovementController();
 }

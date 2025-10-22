@@ -8,19 +8,13 @@ void faireLosange() {
     // tourne pour sortir de la ligne 
     Movement::turnLeft(135);
     Movement::moveForward(distance);
-
     
     Movement::turnLeft(45);
     Movement::moveForward(distance);
-
     
     Movement::turnLeft(45);
     Movement::moveForward(distance);
-
     
     Movement::turnLeft(45);
     Movement::moveForward(distance);
-
-
-    Movement::stop();
 }

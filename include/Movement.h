@@ -17,6 +17,15 @@ namespace Movement {
 
     enum MoveEnum { FORWARD, TURN_LEFT, TURN_RIGHT, NONE };
 
+    // Offset pour le suiveur de ligne
+    enum LineOffsetEnum {
+        AUCUN,
+        PETIT_GAUCHE,
+        GRAND_GAUCHE,
+        PETIT_DROITE,
+        GRAND_DROITE
+    };
+
     //function prototypes
     void init();
 
@@ -34,6 +43,7 @@ namespace Movement {
     void stop();
     void waitEndMove();
     void runMovementController();
+    void setOffset(LineOffsetEnum mode);
     MoveEnum getCurrentMove();
 }
 #endif

@@ -1,7 +1,9 @@
+#pragma once
+
 #include "WheelPID.h"
 #include "Movement.h"
 
-// Radius du cercle(30 pour incertitude)
+// Rayon du cercle
 constexpr float MAX_QUILLE_DISTANCE = 30.0f;
 
 void actionQuille(SRF04Sonar& sonar);
