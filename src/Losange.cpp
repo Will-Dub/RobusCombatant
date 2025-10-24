@@ -9,12 +9,14 @@ void faireLosange() {
     Movement::turnLeft(135);
     Movement::moveForward(distance);
     
-    Movement::turnLeft(45);
+    Movement::turnLeft(90);
     Movement::moveForward(distance);
     
-    Movement::turnLeft(45);
+    Movement::turnLeft(90);
     Movement::moveForward(distance);
     
-    Movement::turnLeft(45);
+    Movement::turnLeft(90);
     Movement::moveForward(distance);
+
+    Movement::turnRight(45);
 }

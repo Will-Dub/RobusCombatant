@@ -63,6 +63,7 @@ namespace Movement {
     void waitEndMove(){
         while(currentMove != MoveEnum::NONE){
             runMovementController();
+            delay(1);
         }
     }
 
