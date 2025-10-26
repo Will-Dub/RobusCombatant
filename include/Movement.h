@@ -6,7 +6,7 @@
 
 namespace Movement {
     // RAYON = demi-empattement en mètres (ex.: empattement 19 cm => rayon 9.5 cm => 0.095 m)
-    constexpr float RAYON = (0.18f / 2.0f)*1.01;          // m
+    constexpr float RAYON = (0.19f / 2.0f)*100;          // m
     constexpr float ACCEL_FORWARD_DISTANCE = 9.0f;   // cm
     constexpr float ACCEL_TURN_DISTANCE    = 4.8f;   // cm
     constexpr float STOP_TOLERANCE         = 1.0f;   
