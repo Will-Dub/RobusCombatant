@@ -11,6 +11,12 @@ namespace WHEEL_PID{
     float iLeftError = 0;
     float iRightError = 0;
 
+
+    
+    static constexpr float LEFT_SCALE  = 1.00f; // augmente la vitesse de la roue gauche
+    static constexpr float RIGHT_SCALE = 1.00f; // ne change pas la droite
+
+
     inline float constrainFloat(float value, float min_val, float max_val) {
         if (value < min_val) return min_val;
         if (value > max_val) return max_val;
@@ -22,9 +28,11 @@ namespace WHEEL_PID{
     }
 
     void setPIDDesiredPulse(int newLeftDesiredPulse, int newRightDesiredPulse){
-        leftDesiredPulse = newLeftDesiredPulse;
-        rightDesiredPulse = newRightDesiredPulse;
-    }
+    // équilibrage G/D 
+    leftDesiredPulse  = (LEFT_SCALE  * newLeftDesiredPulse);
+    rightDesiredPulse = (RIGHT_SCALE * newRightDesiredPulse);
+}
+
 
     void stopMotor(){
         MOTOR_SetSpeed(LEFT, 0);

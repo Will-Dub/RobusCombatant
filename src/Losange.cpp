@@ -1,22 +1,25 @@
+
 #include "Losange.h"
+#include "Movement.h"
 
 void faireLosange() {
-    float distance = 10.0; 
+    const float distance = 50.0f;  // distance des côtés du losange (cm)
+    const int vmin = Movement::MIN_TURNING_SPEED;
+    const int vmax = Movement::MAX_TURNING_SPEED;
 
-    // Suit la ligne 
-
-    // tourne pour sortir de la ligne 
-    Movement::turnLeft(135);
-    Movement::moveForward(distance);
-    
-    Movement::turnLeft(90);
-    Movement::moveForward(distance);
-    
-    Movement::turnLeft(90);
-    Movement::moveForward(distance);
-    
-    Movement::turnLeft(90);
+    // Sort de la ligne et commence le losange
+    Movement::turnLeft(135.0f, vmin, vmax);
     Movement::moveForward(distance);
 
-    Movement::turnRight(45);
+    Movement::turnLeft(90.0f, vmin, vmax);
+    Movement::moveForward(distance);
+
+    Movement::turnLeft(90.0f, vmin, vmax);
+    Movement::moveForward(distance);
+
+    Movement::turnLeft(90.0f, vmin, vmax);
+    Movement::moveForward(distance);
+
+    // Retour à l'orientation de départ
+    Movement::turnRight(45.0f, vmin, vmax);
 }
