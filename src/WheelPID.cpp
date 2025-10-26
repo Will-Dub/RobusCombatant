@@ -101,13 +101,46 @@ namespace WHEEL_PID {
         // Si consignes nulles → stop propre
         if (leftDesiredPulse == 0 && rightDesiredPulse == 0) {
             stopMotor();
+<<<<<<< Updated upstream
             previousTime = now;
+=======
+            iLeftError = 0;
+            iRightError = 0;
+            lastLeftError = 0;
+            lastRightError = 0;
+            previousTime = currentTime;
+>>>>>>> Stashed changes
             return;
         }
 
+<<<<<<< Updated upstream
         // Sécurité dt
         if (dt <= 0.0005f) return;   // < 0.5 ms : ignore
         if (dt > 0.05f) dt = 0.05f;  // borne à 50 ms pour éviter des D trop grandes
+=======
+        // P
+        float leftMotorError = leftMotorCalculatedPulse - leftMotorPulse;
+        float rightMotorError = rightMotorCalculatedPulse - rightMotorPulse;
+        
+        // I
+        iLeftError += leftMotorError;
+        iRightError += rightMotorError;
+        
+        iLeftError = constrainFloat(iLeftError, -maxIntegral, maxIntegral);
+        iRightError = constrainFloat(iRightError, -maxIntegral, maxIntegral);
+        
+        // D
+        float dLeftMotorError = (leftMotorError - lastLeftError) / elapsedTimeSec;
+        float dRightMotorError = (rightMotorError - lastRightError) / elapsedTimeSec;
+        
+        // Calculation
+        float outLeftMotor = kp * leftMotorError + ki * iLeftError + kd * dLeftMotorError;
+        float outRightMotor = kp * rightMotorError + ki * iRightError + kd * dRightMotorError;
+        
+        // Range 0-1
+        outLeftMotor = constrainFloat(outLeftMotor, 0, 1.0);
+        outRightMotor = constrainFloat(outRightMotor, 0, 1.0);
+>>>>>>> Stashed changes
 
         // Signes & vitesses cibles (pulses/s en magnitude)
         const int   signL = (leftDesiredPulse  >= 0) ? +1 : -1;
@@ -177,6 +210,7 @@ namespace WHEEL_PID {
         uL_signed = slewLimit(uL_signed, lastLeftDuty,  dt, maxDutySlewPerSec);
         uR_signed = slewLimit(uR_signed, lastRightDuty, dt, maxDutySlewPerSec);
 
+<<<<<<< Updated upstream
         // Appliquer vitesses (-1..+1)
         MOTOR_SetSpeed(LEFT,  uL_signed);
         MOTOR_SetSpeed(RIGHT, uR_signed);
@@ -189,6 +223,33 @@ namespace WHEEL_PID {
         lastLeftError  = eL;
         lastRightError = eR;
         previousTime   = now;
+=======
+        Serial.print(">");
+        Serial.print("LeftMotorCalculatedPulse:");
+        Serial.print(leftMotorCalculatedPulse);
+        Serial.print(",");
+        Serial.print("leftMotorPulse:");
+        Serial.print(leftMotorPulse);
+        Serial.print(",");
+        Serial.print("D:");
+        Serial.print(dRightMotorError);
+        Serial.print(",");
+        Serial.print("OutRight:");
+        Serial.print(outRightMotor);
+        Serial.print(",");
+        Serial.print("OutLeft:");
+        Serial.print(outLeftMotor);
+        Serial.print(",");
+        Serial.print("DesiredRight:");
+        Serial.print(rightDesiredPulse);
+        Serial.print(",");
+        Serial.print("TimeElapsed:");
+        Serial.print(elapsedTimeSec);
+        Serial.print(",");
+        Serial.print("getRightCoveredDistance:");
+        Serial.print(getRightCoveredDistance());
+        Serial.println();
+>>>>>>> Stashed changes
     }
 
     void reset(){

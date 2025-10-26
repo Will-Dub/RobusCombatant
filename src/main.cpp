@@ -47,6 +47,7 @@ void setup() {
   BoardInit();
   Movement::init();
   Serial.begin(115200);
+<<<<<<< Updated upstream
   delay(500);
   Movement:: moveForward(500);
 
@@ -58,6 +59,14 @@ void loop() {
   delay(1000);
 }
 
+=======
+}
+
+ void loop() {
+    delay(500);
+    Movement::turnLeft(180);
+  }
+>>>>>>> Stashed changes
 
 
 // void setup() {
