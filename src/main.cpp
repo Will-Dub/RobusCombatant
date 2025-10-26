@@ -48,14 +48,18 @@ void setup() {
   Movement::init();
   Serial.begin(115200);
   delay(500);
-  Movement:: moveForward(500);
 
-          
+  
+   
+             
   
 }
 
 void loop() {
+  Movement::turnRight(90);
+  Movement::stop();
   delay(1000);
+  
 }
 
 
