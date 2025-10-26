@@ -6,7 +6,7 @@
 
 //fichier contenant la dance et les mouvements du robot dans l'ordre
 
-//temps de délais secondes à microsecondes.
+//temps de délais secondes à millisecondes.
 int delayS(int secs){
     int msecs = secs * 1000;
     return msecs;
@@ -86,7 +86,7 @@ void dance(){
     bLedOff();
 
     //Mouvement 14
-    /*360 sens horaire!!*/
+    turnRight(360);
     bothArmUp();
     randomLed(4);
 
@@ -105,7 +105,7 @@ void dance(){
     
     //Mouvement 19
     /*move to position 1*/ //attention puisque bouger prends du temps. Ajouter un timer pour le temps pendant qu'il y a
-    /*360 sens anti-horaire*/  //incertain de l'ordre de ces deux mouvements
+    turnLeft(360);  //incertain de l'ordre de ces deux mouvements
     bothArmFront();
     randomLed(4);
 
@@ -186,7 +186,7 @@ void dance(){
     bLedOff();
     
     //Mouvement 35
-    /*720 sens horaire*/
+    turnRight(720);
     randomLed(4);
 
     //Mouvement 36
@@ -293,7 +293,7 @@ void dance(){
 
     //Mouvement 54
     /*move to position 1*/
-    /*do a 360*/
+    turnRight(360);
     bothArmUp();
     randomLed(3);
 
@@ -314,7 +314,7 @@ void dance(){
     
     //Mouvement 58
     /*move to position 1*/
-    /*do a 360*/
+    turnRight(360);
     bothArmUp();
     randomLed(3);
 
@@ -335,7 +335,7 @@ void dance(){
     
     //Mouvement 62
     /*move to position 1*/
-    /*do a 360*/
+    turnRight(360);
     bothArmUp();
     randomLed(3);
 
@@ -346,7 +346,7 @@ void dance(){
 
     //Mouvement 64
     /*move to position 3*/
-    /*do a 360*/
+    turnRight(360);
     bothArmFront();
     randomLed(3);
 
@@ -357,7 +357,7 @@ void dance(){
     
     //Mouvement 66
     /*move to position 1*/
-    /*do a 360*/
+    turnRight(360);
     bothArmUp();
     randomLed(3);
     
@@ -366,7 +366,7 @@ void dance(){
     randomLed(2);
     
     //Mouvement 68
-    /*do a 1080*/
+    turnRight(1080);
     randomLed(2);
 
     //Mouvement 69
