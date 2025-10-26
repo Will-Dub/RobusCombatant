@@ -31,7 +31,7 @@
 //    Movement::runMovementController();
 //}
 
-// main.cpp (LibRobus)
+
 
 
 
@@ -43,26 +43,21 @@
 
 
 void setup() {
+
   BoardInit();
   Movement::init();
   Serial.begin(115200);
   delay(500);
-    Movement::moveForward(500);
-    delay(2000);
-    Movement::stop();
-//     Movement :: turnLeft(90);
-//     delay(2000);
-//     Movement::stop();
-    Movement::turnLeft(180);
-    delay(2000);
-    Movement::stop();
-    Movement::moveForward(500);
-    Movement::stop();
+  Movement:: moveForward(500);
+
+          
+  
 }
 
- void loop() {
+void loop() {
+  delay(1000);
+}
 
-  }
 
 
 // void setup() {
