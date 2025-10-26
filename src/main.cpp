@@ -16,7 +16,6 @@ void setup() {
     Movement::init();
     LEDInit();
     Serial.begin(115200);
-    vSetupLineSensors();
     sonar.init(ECHO_PIN, TRIG_PIN);
 }
 //-----------------------------
@@ -32,11 +31,4 @@ void loop() {
         dance();
         doDanceOnce = true;
     }
-}
-
-
-DETECTION::DetectionState getIRDetection(){
-    bool isLeftOn = digitalRead(IR_LEFT_PIN);
-    bool isRightOn = digitalRead(IR_LEFT_PIN);
-    return DETECTION::getDetection(isLeftOn, isRightOn);
 }
