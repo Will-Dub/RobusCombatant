@@ -1,25 +1,27 @@
 #include <Arduino.h>
 #include <LibRobus.h>
-#include "Detection.h"
 #include "WheelPID.h"
-#include "ArmControl.h"
+#include "Movement.h"
 #include "LedControl.h"
+#include "ArmControl.h"
 #include "Dance.h"
 
-#define IR_LEFT_PIN 39 // Vert
-#define IR_RIGHT_PIN 40 // Rouge
+constexpr int ECHO_PIN = 37;
+constexpr int TRIG_PIN = 38;
 
+SRF04Sonar sonar;
+
+void setup() {
+    BoardInit();
+    Movement::init();
+    LEDInit();
+    Serial.begin(115200);
+    vSetupLineSensors();
+    sonar.init(ECHO_PIN, TRIG_PIN);
+}
 //-----------------------------
 // MAIN CODE.
 //-----------------------------
-void setup() {
-    BoardInit();
-    WHEEL_PID::initPID();
-    LEDInit();
-    Serial.begin(115200);
-    pinMode(IR_LEFT_PIN, INPUT);
-    pinMode(IR_RIGHT_PIN, INPUT);
-}
 
 bool doDanceOnce = false;
 
@@ -31,6 +33,7 @@ void loop() {
         doDanceOnce = true;
     }
 }
+
 
 DETECTION::DetectionState getIRDetection(){
     bool isLeftOn = digitalRead(IR_LEFT_PIN);
