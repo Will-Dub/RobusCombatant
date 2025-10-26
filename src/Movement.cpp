@@ -12,12 +12,6 @@ namespace Movement {
     // Snapshots encodeurs au début d’un virage (cm)
     static float baseRight = 0.0f;
     static float baseLeft  = 0.0f;
-
-    // Signes moteurs (corrige inversion matérielle si besoin)
-    // +1 = normal, -1 = inversé
-    static constexpr int LEFT_SIGN  = +1;
-    static constexpr int RIGHT_SIGN = +1;   // si “avance” => pivote, mets -1 ici, ou inverse LEFT_SIGN
-
     // ===== INIT =====
     void init(){
         WHEEL_PID::init();
@@ -52,8 +46,6 @@ namespace Movement {
 
     void turnRightNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
-        baseRight = WHEEL_PID::getRightCoveredDistance(); // cm
-        baseLeft  = WHEEL_PID::getLeftCoveredDistance();  // cm
         currentMove = MoveEnum::TURN_RIGHT;
         goalDistance = angleToDistance(angle_deg);        // cm
         minSpeed = pMinSpeed;
@@ -63,8 +55,6 @@ namespace Movement {
 
     void turnLeftNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
-        baseRight = WHEEL_PID::getRightCoveredDistance(); // cm
-        baseLeft  = WHEEL_PID::getLeftCoveredDistance();  // cm
         currentMove = MoveEnum::TURN_LEFT;
         goalDistance = angleToDistance(angle_deg);        // cm
         minSpeed = pMinSpeed;
@@ -84,10 +74,8 @@ namespace Movement {
 
     // ===== Attente bloquante =====
     void waitEndMove(){
-        unsigned long t0 = millis();
         while(currentMove != MoveEnum::NONE){
             runMovementController();
-            if (millis() - t0 > 10000UL) break;
             delay(1);
         }
     }
@@ -139,8 +127,8 @@ namespace Movement {
                         remainingDistance, goalDistance, ACCEL_TURN_DISTANCE, minSpeed, maxSpeed
                     );
                     WHEEL_PID::setPIDDesiredPulse(
-                        LEFT_SIGN  *  speed,   // gauche +
-                        RIGHT_SIGN * (-speed)  // droite -
+                        speed,   // gauche +
+                        -speed  // droite -
                     );
                 }
                 break;
@@ -159,8 +147,8 @@ namespace Movement {
                         remainingDistance, goalDistance, ACCEL_TURN_DISTANCE, minSpeed, maxSpeed
                     );
                     WHEEL_PID::setPIDDesiredPulse(
-                        LEFT_SIGN  * (-speed), // gauche -
-                        RIGHT_SIGN *  speed    // droite +
+                        -speed, // gauche -
+                        speed    // droite +
                     );
                 }
                 break;
@@ -188,8 +176,8 @@ namespace Movement {
                     }
 
                     WHEEL_PID::setPIDDesiredPulse(
-                        LEFT_SIGN  * leftSpeed,
-                        RIGHT_SIGN * rightSpeed
+                        leftSpeed,
+                        rightSpeed
                     );
                 }
                 break;
