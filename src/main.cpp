@@ -1,28 +1,31 @@
 #include <Arduino.h>
 #include <LibRobus.h>
-#include "Detection.h"
 #include "WheelPID.h"
+#include "Quille.h"
+#include "Movement.h"
+#include "Line.h"
+#include "LedControl.h"
 
-#define IR_LEFT_PIN 39 // Vert
-#define IR_RIGHT_PIN 40 // Rouge
+constexpr int ECHO_PIN = 37;
+constexpr int TRIG_PIN = 38;
 
-//-----------------------------
-// MAIN CODE.
-//-----------------------------
+SRF04Sonar sonar;
+
 void setup() {
     BoardInit();
-    WheelPID::initPID();
+    Movement::init();
+    LEDInit();
     Serial.begin(115200);
-    pinMode(IR_LEFT_PIN, INPUT);
-    pinMode(IR_RIGHT_PIN, INPUT);
+    vSetupLineSensors();
+    sonar.init(ECHO_PIN, TRIG_PIN);
 }
 
 void loop() {
-    Serial.println("TEST");
-}
+    if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
+        Movement::moveForwardNonBlocking(99999);
+    }
 
-DETECTION::DetectionState getIRDetection(){
-    bool isLeftOn = digitalRead(IR_LEFT_PIN);
-    bool isRightOn = digitalRead(IR_LEFT_PIN);
-    return DETECTION::getDetection(isLeftOn, isRightOn);
+    unsigned int ucSensorState = ucReadLineSensors();
+    vDecisionTime(ucSensorState);
+    Movement::runMovementController();
 }

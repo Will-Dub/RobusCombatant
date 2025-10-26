@@ -17,13 +17,19 @@ namespace WHEEL_PID{
         return value;
     }
 
-    void initPID(){
+    void init(){
         previousTime = millis();
     }
 
     void setPIDDesiredPulse(int newLeftDesiredPulse, int newRightDesiredPulse){
         leftDesiredPulse = newLeftDesiredPulse;
         rightDesiredPulse = newRightDesiredPulse;
+    }
+
+    void stopMotor(){
+        MOTOR_SetSpeed(LEFT, 0);
+        MOTOR_SetSpeed(RIGHT, 0);
+        previousTime = millis();
         iLeftError = 0;
         iRightError = 0;
         lastLeftError = 0;
@@ -34,6 +40,10 @@ namespace WHEEL_PID{
         unsigned long currentTime = millis();
         float elapsedTimeSec = (currentTime - previousTime) / 1000.0f;
 
+        if (leftDesiredPulse == 0 && rightDesiredPulse == 0) {
+            stopMotor();
+            return;
+        }
         if (elapsedTimeSec <= 0.0f) return;
         
         float leftMotorCalculatedPulse = (abs(leftDesiredPulse) * elapsedTimeSec);
@@ -119,22 +129,24 @@ namespace WHEEL_PID{
 
     // Retourne la distance en cm
     float getCoveredDistance(){
-        float combinedAveragePulse = (leftTotalPulse + rightTotalPulse) / 2;
-        float distance_cm = abs(combinedAveragePulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        float combinedAveragePulse = (abs(leftTotalPulse) + abs(rightTotalPulse)) / 2;
+        return pulseToDistance(combinedAveragePulse);
     }
 
     float getRightCoveredDistance() {
-        float distance_cm = abs(rightTotalPulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        return pulseToDistance(rightTotalPulse);
     }
 
     float getLeftCoveredDistance(){
-        float distance_cm = abs(leftTotalPulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
-        return distance_cm;
+        return pulseToDistance(leftTotalPulse);
+    }
+
+    float pulseToDistance(int pulse) {
+        return abs(pulse) / PULSE_PER_TURN * (PI * ROUE_DIAMETRE) * POUCE_TO_CM;
     }
 
     void resetCoveredDistance(){
+        previousTime = millis();
         leftTotalPulse = 0;
         rightTotalPulse = 0;
     }
