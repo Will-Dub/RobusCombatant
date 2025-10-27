@@ -12,7 +12,7 @@ const int GLED = 47;
 const int BLED = 46;
 
 //ADJUST DELAYS FOR THE FUTURE!!!! -> should be fine now
-const int flashDelay = 250; //durée d'un flash
+const int flashDelay = 230; //durée d'un flash
 
 //initialise les DELs
 void LEDInit(){
@@ -166,7 +166,7 @@ void flashGB(int length){
 }
 
 //allume des lumières aléatoires
-void randomLed(int length){
+/*void randomLed(int length){
     int count = 0;
     int counterMax = length * 4;
     int ledChoice = 0;
@@ -199,4 +199,49 @@ void randomLed(int length){
         }
         count++;
     }
+}*/
+
+void randomLed(){
+    int count = 0;
+    int counterMax = 4;
+    int ledChoice = 0;
+    for(count = 0; count < counterMax;count++)
+    {
+        ledChoice = rand()%(3-0+1)+0;
+        if(ledChoice == 0)
+        {
+            yLedOn();
+        }
+        if(ledChoice == 1)
+        {
+            rLedOn();
+        }
+        if(ledChoice == 2)
+        {
+            gLedOn();
+        }
+        if(ledChoice == 3)
+        {
+            bLedOn();
+        }
+        count++;
+    }
+}
+
+//éteint toutes les DELs
+void allOff()
+{
+    yLedOff();
+    rLedOff();
+    gLedOff();
+    bLedOff();
+}
+
+//allume toutes les DELs
+void allOn()
+{
+    yLedOn();
+    rLedOn();
+    gLedOn();
+    bLedOn();
 }

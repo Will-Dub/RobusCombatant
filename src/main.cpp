@@ -23,9 +23,15 @@ void setup() {
 //-----------------------------
 
 bool doDanceOnce = false;
+bool backBumperPressed = false;
 
 void loop() {
     Serial.println("TEST");
+
+    while(backBumperPressed == false)
+    {
+        backBumperPressed = ROBUS_IsBumper(3);
+    }
     //!!ajouter ici le code qui attends le trigger de départ!! (à mettre une fois que nous saurons comment ils veulent faire démarrer la dance)
     if(doDanceOnce == false){
         dance();

@@ -9,7 +9,7 @@
 //fichier contenant la dance et les mouvements du robot dans l'ordre
 
 //temps de délais secondes à millisecondes.
-int delayS(int secs){
+int delayS(float secs){
     int msecs = secs * 1000;
     return msecs;
 }
@@ -18,13 +18,14 @@ int delayS(int secs){
 //SO IT DOESN'T DOUBLE HOW LONG IT TAKES BEFORE DOING THE NEXT MOVE (probably does actually, 
 //same way delayS works). But easy fix if yes.
 
-void dance(){
+void dance()
+{
+
     //Mouvement 1
     bothArmDown();
     Serial.println("move 1");
-    delay(delayS(3));   //adust the time here, depending on how long the robot takes to bootup so it syncs with the dance.
+    delay(delayS(4.7));   //adust the time here, depending on how long the robot takes to bootup so it syncs with the dance.
 
-    
     //Mouvement 2
     leftArmUp();
     Serial.println("move 2");
@@ -41,8 +42,9 @@ void dance(){
     delay(delayS(2));
 
     //Mouvement 5
+    rightArmDown();
     delay(delayS(22));
-
+    
     //Mouvement 6
     rLedOn();
     delay(delayS(2));
@@ -88,9 +90,12 @@ void dance(){
     bLedOff();
 
     //Mouvement 14
-    Movement::turnRight(360);
+    randomLed();
     bothArmUp();
-    randomLed(4);
+    Movement::turnRight(360,1600,6600);
+    //randomLed(4);
+    //delay(delayS(4));
+    allOff();
 
     //Mouvement 15
     bothArmDown();
@@ -106,34 +111,40 @@ void dance(){
     flashRB(2);
     
     //Mouvement 19
-    Movement::turnLeft(180);
-    Movement::moveForward(20); //attention puisque bouger prends du temps. Ajouter un timer pour le temps pendant qu'il y a
-    Movement::turnLeft(360);  //incertain de l'ordre de ces deux mouvements
-    /*move to position 1*/
+    randomLed();
     bothArmFront();
-    randomLed(4);
+    Movement::turnLeft(360,1600,6600);
+    //randomLed(4);
+    //delay(delayS(4));
+    allOff();
 
+    //=================seuil de succès==================
     //Mouvement 20
     bothArmDown();
-    delay(delayS(4));
+    //Movement::turnLeft(180,1600,6600);
+    Movement::moveForward(20,1600,6800);
+    /*move to position 1*/
+    //delay(delayS(4));
     
     //Mouvement 21
-    Movement::turnLeft(135);
-    Movement::moveForward(28.28);
+    Movement::turnLeft(135,1600,6600);
+    Movement::moveForward(28.28,1600,6800);
     /*move to position 2*/
-    delay(delayS(4));
+    //delay(delayS(4));
     
     //Mouvement 22
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
+    Movement::turnLeft(90,1600,6600);
+    Movement::moveForward(28.28,1600,6800);
     /*move to position 3*/
-    delay(delayS(4));
+    //delay(delayS(4));
 
     //Mouvement 23
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
+    Movement::turnLeft(90,1600,6600);
+    Movement::moveForward(28.28,1600,6800);
     /*move to position 4*/
     delay(delayS(4));
+
+//=================seuil de test=============
 
     //Mouvement 24
     Movement::turnLeft(90);
@@ -211,19 +222,16 @@ void dance(){
     Movement::turnLeft(135);
     Movement::moveForward(20);
     /*move to position 0*/
-    yLedOn();
-    rLedOn();
-    gLedOn();
-    bLedOn();
+    allOn();
     delay(delayS(4));
-    yLedOff();
-    rLedOff();
-    gLedOff();
-    bLedOff();
+    allOff();
     
     //Mouvement 35
+    randomLed();
     Movement::turnRight(720);
-    randomLed(4);
+    //randomLed(4);
+    delay(delayS(4));
+    allOff();
 
     //Mouvement 36
     Movement::turnLeft(45);
@@ -268,10 +276,13 @@ void dance(){
     bLedOff();
 
     //Mouvement 41
+    randomLed();
     Movement::turnLeft(135);
     Movement::moveForward(20);
     /*move to position 0*/
-    randomLed(4);
+    //randomLed(4);
+    delay(delayS(4));
+    allOff();
     
     //Mouvement 42
     Movement::turnRight(90);
@@ -340,138 +351,212 @@ void dance(){
     //movements after this were documented by Samuel in the excel
 
     //Mouvement 50
+    randomLed();
+    bothArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 1*/
-    bothArmUp();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
 
     //Mouvement 51
+    randomLed();
+    rightArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 2*/
-    rightArmFront();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
     
     //Mouvement 52
+    randomLed();
+    bothArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 3*/
-    bothArmFront();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
     
     //Mouvement 53
+    randomLed();
+    rightArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 4*/
-    rightArmUp();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 54
+    randomLed();
+    bothArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 1*/
     Movement::turnRight(360);
-    bothArmUp();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 55
+    randomLed();
+    rightArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 2*/
-    rightArmFront();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 56
+    randomLed();
+     bothArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 3*/
-    bothArmFront();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
     
     //Mouvement 57
+    randomLed();
+    rightArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 4*/
-    rightArmUp();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
     
     //Mouvement 58
+    randomLed();
+    bothArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 1*/
     Movement::turnRight(360);
-    bothArmUp();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 59
+    randomLed();
+    rightArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
-    /*move to position 2*/
-    rightArmFront();
-    randomLed(2);
+    /*move to position 2*/    
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
 
     //Mouvement 60
+    randomLed();
+    bothArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 3*/
-    bothArmFront();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 61
+    randomLed();
+    rightArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 4*/
-    rightArmUp();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
     
     //Mouvement 62
+    randomLed();
+    bothArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 1*/
     Movement::turnRight(360);
-    bothArmUp();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 63
+    randomLed();
+    rightArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 2*/
-    rightArmFront();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
 
     //Mouvement 64
+    randomLed();
+    bothArmFront();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 3*/
     Movement::turnRight(360);
-    bothArmFront();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
 
     //Mouvement 65
+    randomLed();
+    rightArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 4*/
-    rightArmUp();
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
     
     //Mouvement 66
+    randomLed();
+    bothArmUp();
     Movement::turnLeft(90);
     Movement::moveForward(28.28);
     /*move to position 1*/
     Movement::turnRight(360);
-    bothArmUp();
-    randomLed(3);
+    //randomLed(3);
+    delay(delayS(3));
+    allOff();
+
     
     //Mouvement 67
+    randomLed();
     Movement::turnLeft(135);
     Movement::moveForward(20);
     /*move to position 0*/
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
     
     //Mouvement 68
+    randomLed();
     Movement::turnRight(1080);
-    randomLed(2);
+    //randomLed(2);
+    delay(delayS(2));
+    allOff();
+
 
     //Mouvement 69
     //FIN ICI!!!

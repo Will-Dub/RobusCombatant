@@ -15,4 +15,7 @@ void flashYB(int length);
 void flashRG(int length);
 void flashRB(int length);
 void flashGB(int length);
-void randomLed(int length);
+void randomLed();
+//void randomLed(int length);
+void allOff();
+void allOn();

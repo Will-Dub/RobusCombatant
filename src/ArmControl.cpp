@@ -5,21 +5,21 @@
 //fichier qui contrôle les servo_moteurs
 
 //donne un nombre au id du bras. !!!!!!S'assurer d'inverser ici si les bras sont montés de façon inverse.
-const int leftArm = 0;
-const int rightArm = 1;
+const int leftArm = 1;
+const int rightArm = 0;
 
 //valeur des angles des positions  !!!!!!!À AJUSTER AU BESOIN
-const int rightUpAngle = 0;
+const int rightUpAngle = 180;
 const int rightFrontAngle = 90;
-const int rightDownAngle = 180;
+const int rightDownAngle = 0;
 
 //valeur des angles des positions  !!!!!!!À AJUSTER AU BESOIN
-const int leftUpAngle = 180;
+const int leftUpAngle = 0;
 const int leftFrontAngle = 90;
-const int leftDownAngle = 0;
+const int leftDownAngle = 180;
 
 //temps du délai avant de bouger les bras  !!!!!!!À AJUSTER AU BESOIN
-const int moveDelay = 1000;
+const int moveDelay = 0;
 
 //intialise les servo moteurs
 void armsInit(){
