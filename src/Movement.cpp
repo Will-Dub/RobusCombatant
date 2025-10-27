@@ -19,17 +19,17 @@ namespace Movement {
     }
 
     // ===== API bloquante =====
-    void moveForward(float distance_cm, int pMinSpeed, int pMaxSpeed) {
+    void moveForward(float distance_cm, int pMinSpeed=MIN_STRAIGHT_SPEED, int pMaxSpeed=MAX_STRAIGHT_SPEED) {
         moveForwardNonBlocking(distance_cm, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
 
-    void turnRight(float angle_deg, int pMinSpeed, int pMaxSpeed) {
+    void turnRight(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
         turnRightNonBlocking(angle_deg, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
 
-    void turnLeft(float angle_deg, int pMinSpeed, int pMaxSpeed) {
+    void turnLeft(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
         turnLeftNonBlocking(angle_deg, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
@@ -38,7 +38,7 @@ namespace Movement {
     {}
 
     // ===== API non-bloquante =====
-    void moveForwardNonBlocking(float distance_cm, int pMinSpeed, int pMaxSpeed) {
+    void moveForwardNonBlocking(float distance_cm, int pMinSpeed=MIN_STRAIGHT_SPEED, int pMaxSpeed=MAX_STRAIGHT_SPEED) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::FORWARD;
         offsetMode = LineOffsetEnum::AUCUN;
@@ -47,7 +47,7 @@ namespace Movement {
         maxSpeed = pMaxSpeed;
     }
 
-    void turnRightNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
+    void turnRightNonBlocking(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_RIGHT;
         goalDistance = angleToDistance(angle_deg);        // cm
@@ -56,7 +56,7 @@ namespace Movement {
         offsetMode = LineOffsetEnum::AUCUN;
     }
 
-    void turnLeftNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
+    void turnLeftNonBlocking(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_LEFT;
         goalDistance = angleToDistance(angle_deg);        // cm
@@ -88,27 +88,24 @@ namespace Movement {
         WHEEL_PID::setPIDDesiredPulse(0, 0);
         WHEEL_PID::reset();
         currentMove = MoveEnum::NONE;
+        goalDistance = 0.0f;
         WHEEL_PID::stopMotor();
     }
 
     static float computeScaledSpeed(float remainingDistance, float totalDistance,
-                                 float accelDistance,
-                                    float minS, float maxS) {
+                                float accelDistance,
+                                float minS, float maxS) {
         if (remainingDistance <= 0.0f) return 0.0f;
 
         float coveredDistance = totalDistance - remainingDistance;
 
-        // borne l’accélération 
-        float accelCap = fmaxf(1.0f, 0.5f * totalDistance);
-        accelDistance = fminf(accelDistance, accelCap);
+        accelDistance = fminf(accelDistance, 0.5f * totalDistance);
 
         float accelFactor = constrain(coveredDistance / accelDistance, 0.0f, 1.0f);
         float decelFactor = constrain(remainingDistance / accelDistance, 0.0f, 1.0f);
 
-        float accelSmooth = accelFactor * accelFactor;
-        float decelSmooth = decelFactor * decelFactor;
-
-        float speedFactor = fminf(accelSmooth, decelSmooth);
+        float speedFactor = 4.0f * accelFactor * decelFactor;
+        speedFactor = constrain(speedFactor, 0.0f, 1.0f);
 
         return minS + (maxS - minS) * speedFactor;
     }

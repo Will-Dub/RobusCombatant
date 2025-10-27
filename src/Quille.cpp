@@ -2,15 +2,11 @@
 
 bool isQuilleFound = false;
 float distanceTourner = 0;
-float distanceAvancer = 0;
 
 void faireQuille(){
     // Scan pour la quille
-    Serial.println("Tourne");
-    Movement::turnRightNonBlocking(360, 500, 3000);
+    Movement::turnRightNonBlocking(360, 500, 2500);
     waitEndMoveFinding();
-
-    Serial.println("Tourné fini");
 
     // Vérifie si la quille a été trouvé
     if(!isQuilleFound){
@@ -20,8 +16,7 @@ void faireQuille(){
 
     Serial.println("Avance");
     // Phase 2: Avance vers la quille
-    Movement::moveForwardNonBlocking(MAX_QUILLE_DISTANCE);
-    waitEndMoveGoingTo();
+    Movement::moveForward(FORWARD_DISTANCE);
 
     Serial.println("Fini");
 
@@ -31,19 +26,17 @@ void faireQuille(){
 
 void goBackToStart(){
     // Fait un 180
-    Movement::turnRight(180);
+    Movement::turnRight(170);
 
     // Retourne au milieu
-    Movement::moveForward(distanceAvancer);
+    Movement::moveForward(FORWARD_DISTANCE);
 
     // Fini le tour de 360
-    float angleRestant = 360.0f - Movement::distanceToAngle(distanceTourner);
-    Movement::turnRight(angleRestant);
+    Movement::turnLeft(180+Movement::distanceToAngle(distanceTourner));
 
     // Reset
     isQuilleFound = false;
     distanceTourner = 0;
-    distanceAvancer = 0;
 }
 
 void waitEndMoveFinding(){
@@ -52,25 +45,13 @@ void waitEndMoveFinding(){
 
         if (getIRIsDetected()) {
             Serial.println("Quille trouvé");
+            delay(3);
             isQuilleFound = true;
+            Movement::stop();
             distanceTourner = WHEEL_PID::getRightCoveredDistance();
-            Movement::stop();
             break;
         }
-    }
-}
-
-void waitEndMoveGoingTo(){
-    while(Movement::getCurrentMove() != Movement::MoveEnum::NONE){
-        Movement::runMovementController();
-
-        if (!getIRIsDetected()) {
-            Serial.println("Quille tombé");
-            // La quille n’est plus visible
-            distanceAvancer = WHEEL_PID::getCoveredDistance();
-            Movement::stop();
-            break;
-        }
+        delay(5);
     }
 }
 
@@ -83,14 +64,11 @@ float getIRDistance()
 
     Serial.println(distance);
 
-    if (distance < 10.0f) distance = 10.0f;
-    if (distance > 80.0f) distance = 80.0f;
-
     return distance;
 }
 
 bool getIRIsDetected()
 {
     float dist = getIRDistance();
-    return (dist <= MAX_QUILLE_DISTANCE);
+    return (dist <= MAX_QUILLE_SENSOR_DISTANCE && dist != 0);
 }

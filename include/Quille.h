@@ -5,7 +5,8 @@
 #include "Movement.h"
 
 // Rayon du cercle
-constexpr float MAX_QUILLE_DISTANCE = 30.0f;
+constexpr float FORWARD_DISTANCE = 50.0f;
+constexpr float MAX_QUILLE_SENSOR_DISTANCE = 25.0f;
 constexpr uint16_t IR_PIN = 3;
 
 void faireQuille();
