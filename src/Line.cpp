@@ -18,9 +18,9 @@ unsigned char ucReadLineSensors(){
     int iMiddleSensorValue = analogRead(MIDDLE_SENSOR_PIN);
     int iRightSensorValue = analogRead(RIGHT_SENSOR_PIN);
 
-    if (iLeftSensorValue < WHITE_THRESHOLD) { bLeftSensor = true;}
-    if (iMiddleSensorValue < WHITE_THRESHOLD) { bMiddleSensor = true;}
-    if (iRightSensorValue < WHITE_THRESHOLD) { bRightSensor = true;}
+    if (iLeftSensorValue >= WHITE_THRESHOLD) { bLeftSensor = true;}
+    if (iMiddleSensorValue >= WHITE_THRESHOLD) { bMiddleSensor = true;}
+    if (iRightSensorValue >= WHITE_THRESHOLD) { bRightSensor = true;}
 
     unsigned char ucSensorState = ((bLeftSensor << 2) | (bMiddleSensor << 1) | bRightSensor);
     return ucSensorState;

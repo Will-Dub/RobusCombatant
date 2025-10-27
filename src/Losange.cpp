@@ -3,7 +3,7 @@
 #include "Movement.h"
 
 void faireLosange() {
-    const float distance = 50.0f;  // distance des côtés du losange (cm)
+    const float distance = 100.0f;  // distance des côtés du losange (cm)
     const int vmin = Movement::MIN_TURNING_SPEED;
     const int vmax = Movement::MAX_TURNING_SPEED;
 

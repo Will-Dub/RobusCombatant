@@ -7,30 +7,27 @@
 #include "LedControl.h"
 #include "Losange.h"
 
-//constexpr int ECHO_PIN = 37;
-//constexpr int TRIG_PIN = 38;
+constexpr int FRONT_BUMPER_ID = 2;
 
-//SRF04Sonar sonar;
+/*
+void setup() {
+   BoardInit();
+   Movement::init();
+   LEDInit();
+   Serial.begin(115200);
+   vSetupLineSensors();
+}
 
-//void setup() {
-//    BoardInit();
-//    Movement::init();
-//    LEDInit();
-//    Serial.begin(115200);
-//    vSetupLineSensors();
-//    sonar.init(ECHO_PIN, TRIG_PIN);
-//}
+void loop() {
+   if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
+       Movement::moveForwardNonBlocking(99999);
+   }
 
-//void loop() {
-//    if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
-//        Movement::moveForwardNonBlocking(99999);
-//    }
-
-//    unsigned int ucSensorState = ucReadLineSensors();
-//    vDecisionTime(ucSensorState);
-//    Movement::runMovementController();
-//}
-
+   unsigned int ucSensorState = ucReadLineSensors();
+   vDecisionTime(ucSensorState);
+   Movement::runMovementController();
+}
+*/
 
 
 
@@ -43,26 +40,22 @@
 
 
 void setup() {
-
   BoardInit();
   Movement::init();
   Serial.begin(115200);
   delay(500);
 
-  
-   
-             
-  
+  //faireQuille();
 }
 
 void loop() {
-  Movement::turnRight(90);
-  Movement::stop();
-  delay(1000);
-  
+  //Movement::turnRight(90);
+  getIRDistance();
+  delay(500);
+  if(ROBUS_IsBumper(FRONT_BUMPER_ID)){
+    faireQuille();
+  }
 }
-
-
 
 // void setup() {
 //   BoardInit();

@@ -4,18 +4,15 @@ namespace WHEEL_PID{
     unsigned long previousTime = 0;
     int leftDesiredPulse = 0;
     int rightDesiredPulse = 0;
-    int leftTotalPulse = 0;
-    int rightTotalPulse = 0;
+    long leftTotalPulse = 0;
+    long rightTotalPulse = 0;
     float lastLeftError = 0;
     float lastRightError = 0;
     float iLeftError = 0;
     float iRightError = 0;
-
-
     
     static constexpr float LEFT_SCALE  = 1.00f; // augmente la vitesse de la roue gauche
     static constexpr float RIGHT_SCALE = 1.00f; // ne change pas la droite
-
 
     inline float constrainFloat(float value, float min_val, float max_val) {
         if (value < min_val) return min_val;
@@ -28,11 +25,10 @@ namespace WHEEL_PID{
     }
 
     void setPIDDesiredPulse(int newLeftDesiredPulse, int newRightDesiredPulse){
-    // équilibrage G/D 
-    leftDesiredPulse  = (LEFT_SCALE  * newLeftDesiredPulse);
-    rightDesiredPulse = (RIGHT_SCALE * newRightDesiredPulse);
-}
-
+        // équilibrage G/D 
+        leftDesiredPulse  = (LEFT_SCALE  * newLeftDesiredPulse);
+        rightDesiredPulse = (RIGHT_SCALE * newRightDesiredPulse);
+    }
 
     void stopMotor(){
         MOTOR_SetSpeed(LEFT, 0);
@@ -100,8 +96,9 @@ namespace WHEEL_PID{
         lastLeftError = leftMotorError;
         lastRightError = rightMotorError;
         previousTime = currentTime;
-
-        /*Serial.print(">");
+        
+        /*
+        Serial.print(">");
         Serial.print("rawRight:");
         Serial.print(rawRightMotorPulse);
         Serial.print(",");
@@ -116,6 +113,9 @@ namespace WHEEL_PID{
         Serial.print(",");
         Serial.print("D:");
         Serial.print(dRightMotorError);
+        Serial.print(",");
+        Serial.print("rightTotalPulse:");
+        Serial.print(rightTotalPulse);
         Serial.print(",");
         Serial.print("OutRight:");
         Serial.print(outRightMotor);

@@ -4,19 +4,26 @@ bool isQuilleFound = false;
 float distanceTourner = 0;
 float distanceAvancer = 0;
 
-void actionQuille(SRF04Sonar& sonar){
+void faireQuille(){
     // Scan pour la quille
+    Serial.println("Tourne");
     Movement::turnRightNonBlocking(360, 500, 3000);
-    waitEndMoveFinding(sonar);
+    waitEndMoveFinding();
+
+    Serial.println("Tourné fini");
 
     // Vérifie si la quille a été trouvé
     if(!isQuilleFound){
+        Serial.println("quille pas trouvé");
         return;
     }
 
+    Serial.println("Avance");
     // Phase 2: Avance vers la quille
     Movement::moveForwardNonBlocking(MAX_QUILLE_DISTANCE);
-    waitEndMoveGoingTo(sonar);
+    waitEndMoveGoingTo();
+
+    Serial.println("Fini");
 
     // Phase 3: Retour
     goBackToStart();
@@ -39,12 +46,12 @@ void goBackToStart(){
     distanceAvancer = 0;
 }
 
-void waitEndMoveFinding(SRF04Sonar& sonar){
+void waitEndMoveFinding(){
     while(Movement::getCurrentMove() != Movement::MoveEnum::NONE){
         Movement::runMovementController();
 
-        float distance = sonar.getRange();
-        if (distance <= MAX_QUILLE_DISTANCE) {
+        if (getIRIsDetected()) {
+            Serial.println("Quille trouvé");
             isQuilleFound = true;
             distanceTourner = WHEEL_PID::getRightCoveredDistance();
             Movement::stop();
@@ -53,16 +60,37 @@ void waitEndMoveFinding(SRF04Sonar& sonar){
     }
 }
 
-void waitEndMoveGoingTo(SRF04Sonar& sonar){
+void waitEndMoveGoingTo(){
     while(Movement::getCurrentMove() != Movement::MoveEnum::NONE){
         Movement::runMovementController();
 
-        float distance = sonar.getRange();
-        if (distance > MAX_QUILLE_DISTANCE) {
+        if (!getIRIsDetected()) {
+            Serial.println("Quille tombé");
             // La quille n’est plus visible
             distanceAvancer = WHEEL_PID::getCoveredDistance();
             Movement::stop();
             break;
         }
     }
+}
+
+float getIRDistance()
+{
+    int raw = ROBUS_ReadIR(IR_PIN);
+
+    float vout = float(raw) * 0.0048828125; // Conversion analog to voltage
+    int distance = 13 * pow(vout, -1);
+
+    Serial.println(distance);
+
+    if (distance < 10.0f) distance = 10.0f;
+    if (distance > 80.0f) distance = 80.0f;
+
+    return distance;
+}
+
+bool getIRIsDetected()
+{
+    float dist = getIRDistance();
+    return (dist <= MAX_QUILLE_DISTANCE);
 }
