@@ -51,6 +51,8 @@ namespace Movement {
                              int pMinSpeed = MIN_TURNING_SPEED,
                              int pMaxSpeed = MAX_TURNING_SPEED);
 
+    void moveUntilLine();
+
     // conversions : distance en cm, angle en degrés
     float distanceToAngle(float distance_cm);
     float angleToDistance(float angle_deg);

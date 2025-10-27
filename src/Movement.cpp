@@ -34,6 +34,9 @@ namespace Movement {
         waitEndMove();
     }
 
+    void moveUntilLine() //Bonne chance les boys 
+    {}
+
     // ===== API non-bloquante =====
     void moveForwardNonBlocking(float distance_cm, int pMinSpeed=MIN_STRAIGHT_SPEED, int pMaxSpeed=MAX_STRAIGHT_SPEED) {
         WHEEL_PID::resetCoveredDistance();
