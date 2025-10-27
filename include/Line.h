@@ -9,10 +9,11 @@
 
 constexpr int WHITE_THRESHOLD = 940;
 
-enum StationEnum { NONE, WALL_DODGE };
+enum StationEnum { NONE, WALL_DODGE, LOSANGE, LOST_LINE, QUILLE};
 
 void vSetupLineSensors();
 unsigned char ucReadLineSensors();
-void vDecisionTime(unsigned char ucSensorState);
+void vCourseCorrection();
+unsigned char ucDecideStation();
 
 #endif

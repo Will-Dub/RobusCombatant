@@ -8,6 +8,7 @@
 #define YELLOW_SQUARE 4
 #define WTF_KINDA_COLOR_SQUARE 5
 
+void vInitColorSensor();
 unsigned char ucDetectColorSquare();
 
 #endif // COLOR_SQUARES_H
