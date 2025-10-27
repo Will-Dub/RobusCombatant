@@ -2,6 +2,12 @@
 #include <Arduino.h>
 #include <GroveColorSensor.h>
 
+GroveColorSensor RGBsensor;
+
+void vInitColorSensor()
+{
+    RGBsensor.ledStatus = 1; // Enable LED
+}
 
 unsigned char ucDetectColorSquare()
 {
@@ -9,12 +15,7 @@ unsigned char ucDetectColorSquare()
     int iGreen; 
     int iBlue;
 
-    GroveColorSensor RGBsensor;
-
-    RGBsensor.ledStatus = 1; // Enable LED
-    delay(10); // Wait for the sensor to stabilize
     RGBsensor.readRGB(&iRed, &iGreen, &iBlue);
-
     if ( (iRed > 200) && (iGreen < 100) && (iBlue > 150) )
     {
         return PINK_SQUARE;
