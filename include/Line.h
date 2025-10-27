@@ -14,6 +14,6 @@ enum StationEnum { NONE, WALL_DODGE, LOSANGE, LOST_LINE, QUILLE};
 void vSetupLineSensors();
 unsigned char ucReadLineSensors();
 void vCourseCorrection();
-unsigned char ucDecideStation();
+StationEnum ucDecideStation();
 
 #endif

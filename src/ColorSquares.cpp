@@ -28,7 +28,7 @@ unsigned char ucDetectColorSquare()
 
     // Normalize to sum = 1 (to reduce light intensity effects)
     float sum = r + g + b;
-    if (sum < 0.001f) return NO_SQUARE;  // very dark area
+    if (clear < 1200.0f) return NO_SQUARE;  // very dark area
 
     r /= sum;
     g /= sum;
@@ -39,24 +39,26 @@ unsigned char ucDetectColorSquare()
     Serial.print(r, 3);
     Serial.print(" G:");
     Serial.print(g, 3);
+    Serial.print(" C:");
+    Serial.print(clear);
     Serial.print(" B:");
     Serial.println(b, 3);
 
     // --- COLOR DECISION LOGIC ---
     if (r > 0.28f && r > g * 0.95f && r < b * 1.05f) {
-    return PINK_SQUARE;  // purple-ish
-}
-else if (b > g * 1.05f && b > r * 1.05f) {
-    return BLUE_SQUARE;
-}
-else if ((r + g)/2 > b * 1.05 && fabsf(r - g) < 0.10) {
-    return YELLOW_SQUARE;
-}
-else if (g > r * 1.05f && g > b * 1.05f) {
-    return GREEN_SQUARE;
-}
-else {
-    return NO_SQUARE;
-}
+        return PINK_SQUARE;  // purple-ish
+    }
+    else if (b > g * 1.05f && b > r * 1.05f) {
+        return BLUE_SQUARE;
+    }
+    else if ((r + g)/2 > b * 1.05 && fabsf(r - g) < 0.10) {
+        return YELLOW_SQUARE;
+    }
+    else if (g > r * 1.05f && g > b * 1.05f) {
+        return GREEN_SQUARE;
+    }
+    else {
+        return NO_SQUARE;
+    }
 
 }

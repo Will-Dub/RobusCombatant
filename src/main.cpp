@@ -7,8 +7,11 @@
 #include "LedControl.h"
 #include "Losange.h"
 #include "ColorSquares.h"
+#include "WallDodge.h"
 
 constexpr int FRONT_BUMPER_ID = 2;
+constexpr int COLOR_INTERVAL_MS = 1000;
+unsigned long lastColorCheck = millis();
 
 void setup() {
    BoardInit();
@@ -23,11 +26,32 @@ void loop() {
        Movement::moveForwardNonBlocking(99999, 400, 4000);
    }
 
+  unsigned long now = millis();
+  if(now - lastColorCheck >= COLOR_INTERVAL_MS){
+      lastColorCheck = now;
+      ucDecideStation();
+      /*StationEnum station = ucDecideStation();
+      switch(station){
+          case WALL_DODGE:
+              vWallDodge();
+              break;
+          case LOSANGE:
+              faireLosange();
+              break;
+          case LOST_LINE:
+              Movement::moveUntilLine();
+              break;
+          case QUILLE:
+              faireQuille();
+              break;
+          default:
+              break;
+        }*/
+    }
+
    vCourseCorrection();
    Movement::runMovementController();
-   delay(5);
 }
-
 
 
 

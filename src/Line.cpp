@@ -96,7 +96,7 @@ void vCourseCorrection()
     }
 }
 
-unsigned char ucDecideStation()
+StationEnum ucDecideStation()
 {
     bool bPinkStationFlag = false; // TO KNOW IF WE HAVE PASSED THE PINK STATION ALREADY
     bool bBlueStationFlag = false; // TO KNOW IF WE HAVE PASSED THE BLUE STATION ALREADY
@@ -104,7 +104,7 @@ unsigned char ucDecideStation()
     bool bYellowStationFlag = false; // TO KNOW IF WE HAVE PASSED THE YELLOW STATION ALREADY
 
     unsigned char ucColor = ucDetectColorSquare();
-    unsigned char ucCurrentStation = StationEnum::NONE;
+    StationEnum ucCurrentStation = StationEnum::NONE;
 
     switch (ucColor) {
         case NO_SQUARE:
