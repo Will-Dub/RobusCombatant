@@ -19,17 +19,17 @@ namespace Movement {
     }
 
     // ===== API bloquante =====
-    void moveForward(float distance_cm, int pMinSpeed=MIN_STRAIGHT_SPEED, int pMaxSpeed=MAX_STRAIGHT_SPEED) {
+    void moveForward(float distance_cm, int pMinSpeed, int pMaxSpeed) {
         moveForwardNonBlocking(distance_cm, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
 
-    void turnRight(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
+    void turnRight(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         turnRightNonBlocking(angle_deg, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
 
-    void turnLeft(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
+    void turnLeft(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         turnLeftNonBlocking(angle_deg, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
@@ -38,7 +38,7 @@ namespace Movement {
     {}
 
     // ===== API non-bloquante =====
-    void moveForwardNonBlocking(float distance_cm, int pMinSpeed=MIN_STRAIGHT_SPEED, int pMaxSpeed=MAX_STRAIGHT_SPEED) {
+    void moveForwardNonBlocking(float distance_cm, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::FORWARD;
         offsetMode = LineOffsetEnum::AUCUN;
@@ -47,7 +47,7 @@ namespace Movement {
         maxSpeed = pMaxSpeed;
     }
 
-    void turnRightNonBlocking(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
+    void turnRightNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_RIGHT;
         goalDistance = angleToDistance(angle_deg);        // cm
@@ -56,7 +56,7 @@ namespace Movement {
         offsetMode = LineOffsetEnum::AUCUN;
     }
 
-    void turnLeftNonBlocking(float angle_deg, int pMinSpeed=MIN_TURNING_SPEED, int pMaxSpeed=MAX_TURNING_SPEED) {
+    void turnLeftNonBlocking(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         WHEEL_PID::resetCoveredDistance();
         currentMove = MoveEnum::TURN_LEFT;
         goalDistance = angleToDistance(angle_deg);        // cm
@@ -168,10 +168,10 @@ namespace Movement {
 
                     // Offset de ligne (si utilisé ailleurs)
                     switch(offsetMode){
-                        case LineOffsetEnum::PETIT_GAUCHE: leftSpeed  *= 0.75f; break;
-                        case LineOffsetEnum::GRAND_GAUCHE: leftSpeed  *= 0.55f; break;
-                        case LineOffsetEnum::PETIT_DROITE: rightSpeed *= 0.75f; break;
-                        case LineOffsetEnum::GRAND_DROITE: rightSpeed *= 0.55f; break;
+                        case LineOffsetEnum::PETIT_GAUCHE: leftSpeed  *= 0.65f; break;
+                        case LineOffsetEnum::GRAND_GAUCHE: leftSpeed  *= 0.15f; break;
+                        case LineOffsetEnum::PETIT_DROITE: rightSpeed *= 0.65f; break;
+                        case LineOffsetEnum::GRAND_DROITE: rightSpeed *= 0.15f; break;
                         case LineOffsetEnum::AUCUN: default: break;
                     }
 
