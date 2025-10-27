@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <LibRobus.h>
 #include "WheelPID.h"
+#include "Line.h"
 
 namespace Movement {
     // RAYON = demi-empattement en mètres (ex.: empattement 19 cm => rayon 9.5 cm => 0.095 m)
@@ -51,7 +52,8 @@ namespace Movement {
                              int pMinSpeed = MIN_TURNING_SPEED,
                              int pMaxSpeed = MAX_TURNING_SPEED);
 
-    void moveUntilLine();
+    void moveUntilLine(int pMinSpeed = MIN_STRAIGHT_SPEED,
+                                int pMaxSpeed = MAX_STRAIGHT_SPEED);
 
     // conversions : distance en cm, angle en degrés
     float distanceToAngle(float distance_cm);

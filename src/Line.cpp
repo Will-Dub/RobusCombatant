@@ -1,6 +1,5 @@
 #include "Line.h"
 #include "ColorSquares.h" 
-#include "WallDodge.h"
 #include <Arduino.h>
 
 StationEnum ucStation = NONE;
@@ -21,12 +20,6 @@ unsigned char ucReadLineSensors()
     int iLeftSensorValue = analogRead(LEFT_SENSOR_PIN);
     int iMiddleSensorValue = analogRead(MIDDLE_SENSOR_PIN);
     int iRightSensorValue = analogRead(RIGHT_SENSOR_PIN);
-
-    Serial.print(iLeftSensorValue);
-    Serial.print("-");
-    Serial.print(iMiddleSensorValue);
-    Serial.print("-");
-    Serial.println(iRightSensorValue);
 
     if (iLeftSensorValue >= WHITE_THRESHOLD) { bLeftSensor = true;}
     if (iMiddleSensorValue >= WHITE_THRESHOLD) { bMiddleSensor = true;}
@@ -151,11 +144,8 @@ unsigned char ucDecideStation()
             if (bYellowStationFlag == false)
             {
                 ucCurrentStation = StationEnum::WALL_DODGE;
-                vWallDodge();
             }
             bYellowStationFlag = true;
-            ucCurrentStation = StationEnum::NONE; // Wall is dodged, resume line follow behavior
-            vCourseCorrection();
             break;
 
         case WTF_KINDA_COLOR_SQUARE:

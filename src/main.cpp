@@ -6,15 +6,16 @@
 #include "Line.h"
 #include "LedControl.h"
 #include "Losange.h"
+#include "ColorSquares.h"
 
 constexpr int FRONT_BUMPER_ID = 2;
 
 void setup() {
    BoardInit();
    Movement::init();
+   vInitColorSensor();
    //LEDInit();
    Serial.begin(115200);
-   //vSetupLineSensors();
 }
 
 void loop() {

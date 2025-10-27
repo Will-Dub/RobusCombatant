@@ -34,8 +34,20 @@ namespace Movement {
         waitEndMove();
     }
 
-    void moveUntilLine() //Bonne chance les boys 
-    {}
+    void moveUntilLine(int pMinSpeed, int pMaxSpeed)
+    {
+        int linePoolCount = 0;
+        moveForwardNonBlocking(99999, pMinSpeed, pMaxSpeed);
+        while(currentMove != MoveEnum::NONE){
+            runMovementController();
+            delay(1);
+
+            if(ucReadLineSensors() != 0){
+                linePoolCount++;
+                if(linePoolCount >= 3) stop();
+            }
+        }
+    }
 
     // ===== API non-bloquante =====
     void moveForwardNonBlocking(float distance_cm, int pMinSpeed, int pMaxSpeed) {

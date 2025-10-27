@@ -16,35 +16,47 @@ void vInitColorSensor()
 
 unsigned char ucDetectColorSquare()
 {
-    uint16_t r, g, b, c;
-    tcs.getRawData(&r, &g, &b, &c);
-    float total = r + g + b;
-    if (total == 0)
-    {
-        total = 1;
-    }
-    float red = (float)r / total;
-    float green = (float)g / total;
-    float blue = (float)b / total;
+    uint16_t red, green, blue, clear;
+    tcs.getRawData(&red, &green, &blue, &clear);
 
-    if (red > blue * 1.3 && red > green * 1.3)
-    {
-        return PINK_SQUARE;
-    }
-    else if (blue > red * 1.3 && blue > green * 1.3)
-    {
-        return BLUE_SQUARE;
-    }
-    else if (green > red * 1.3 && green > blue * 1.3)
-    {
-        return GREEN_SQUARE;
-    }
-    else if ((red + green) / 2 > blue * 1.2)
-    {
-        return YELLOW_SQUARE;
-    }
-    else
-    {
-        return NO_SQUARE;
-    }
+    if (clear == 0) return NO_SQUARE; // avoid divide-by-zero
+
+    // Normalize by clear
+    float r = (float)red / clear;
+    float g = (float)green / clear;
+    float b = (float)blue / clear;
+
+    // Normalize to sum = 1 (to reduce light intensity effects)
+    float sum = r + g + b;
+    if (sum < 0.001f) return NO_SQUARE;  // very dark area
+
+    r /= sum;
+    g /= sum;
+    b /= sum;
+
+    // Debug output
+    Serial.print("R:");
+    Serial.print(r, 3);
+    Serial.print(" G:");
+    Serial.print(g, 3);
+    Serial.print(" B:");
+    Serial.println(b, 3);
+
+    // --- COLOR DECISION LOGIC ---
+    if (r > 0.28f && r > g * 0.95f && r < b * 1.05f) {
+    return PINK_SQUARE;  // purple-ish
+}
+else if (b > g * 1.05f && b > r * 1.05f) {
+    return BLUE_SQUARE;
+}
+else if ((r + g)/2 > b * 1.05 && fabsf(r - g) < 0.10) {
+    return YELLOW_SQUARE;
+}
+else if (g > r * 1.05f && g > b * 1.05f) {
+    return GREEN_SQUARE;
+}
+else {
+    return NO_SQUARE;
+}
+
 }
