@@ -14,12 +14,16 @@ int delayS(float secs){
     return msecs;
 }
 
-//!!!!MAKE SURE THE DELAYS IN THE BLINKING LED CODE DOESN'T COUNT AS DELAYS BEFORE THE NEXT MOVE, 
-//SO IT DOESN'T DOUBLE HOW LONG IT TAKES BEFORE DOING THE NEXT MOVE (probably does actually, 
-//same way delayS works). But easy fix if yes.
+
+
 
 void dance()
 {
+    
+    int forwardMinSpeed = 2700;
+    int forwardMaxSpeed = 7800;
+    int turnMinSpeed = 1600;
+    int turnMaxSpeed = 6600;
 
     //Mouvement 1
     bothArmDown();
@@ -92,7 +96,7 @@ void dance()
     //Mouvement 14
     randomLed();
     bothArmUp();
-    Movement::turnRight(360,1600,6600);
+    Movement::turnRight(360,turnMinSpeed,turnMaxSpeed);
     //randomLed(4);
     //delay(delayS(4));
     allOff();
@@ -113,136 +117,166 @@ void dance()
     //Mouvement 19
     randomLed();
     bothArmFront();
-    Movement::turnLeft(360,1600,6600);
+    Movement::turnLeft(360,turnMinSpeed,turnMaxSpeed);
     //randomLed(4);
     //delay(delayS(4));
     allOff();
+    
 
-    //=================seuil de succès==================
+    forwardMinSpeed = 2700;
+    forwardMaxSpeed = 7800;
+    turnMinSpeed = 2300;
+    turnMaxSpeed = 7000;
+
     //Mouvement 20
     bothArmDown();
-    //Movement::turnLeft(180,1600,6600);
-    Movement::moveForward(20,1600,6800);
-    /*move to position 1*/
+    //Movement::turnLeft(180,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(20,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 1
     //delay(delayS(4));
     
     //Mouvement 21
-    Movement::turnLeft(135,1600,6600);
-    Movement::moveForward(28.28,1600,6800);
-    /*move to position 2*/
+    Movement::turnLeft(135,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 2
     //delay(delayS(4));
     
     //Mouvement 22
-    Movement::turnLeft(90,1600,6600);
-    Movement::moveForward(28.28,1600,6800);
-    /*move to position 3*/
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 3
     //delay(delayS(4));
 
     //Mouvement 23
-    Movement::turnLeft(90,1600,6600);
-    Movement::moveForward(28.28,1600,6800);
-    /*move to position 4*/
-    delay(delayS(4));
-
-//=================seuil de test=============
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 4
+    //delay(delayS(4));
 
     //Mouvement 24
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 1*/
-    delay(delayS(4));
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 1
+    //delay(delayS(4));
 
     //Mouvement 25
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 2*/
-    delay(delayS(4));
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 2
+    //delay(delayS(4));
     
     //Mouvement 26
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 3*/
-    delay(delayS(4));
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 3
+    //delay(delayS(4));
 
     //Mouvement 27
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 4*/
-    delay(delayS(4));
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 4
+    //delay(delayS(4));
     
     //Mouvement 28 
-    Movement::turnLeft(135);
-    Movement::moveForward(20);
-    /*move to position 0*/
-    delay(delayS(4));
+    Movement::turnLeft(135,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(20,forwardMinSpeed,forwardMaxSpeed);
+    //move to position 0
+    //delay(delayS(4));
+    
+    forwardMinSpeed = 3500;
+    forwardMaxSpeed = 8200;
+    turnMinSpeed = 3300;
+    turnMaxSpeed = 7400;
     
     //Mouvement 29
-    Movement::turnRight(135);
-    Movement::moveForward(28.28);
-    Movement::turnRight(45);
-    Movement::moveForward(40);
-    Movement::turnRight(45);
-    Movement::moveForward(28.28);
+    Movement::turnRight(135,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    Movement::turnRight(45,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(30,forwardMinSpeed,forwardMaxSpeed); //CHANGE THIS FOR FINAL DANCE
+    //Movement::moveForward(40);
+    //Movement::turnRight(135,turnMinSpeed,turnMaxSpeed);
     /*Échange de carré*/
-    delay(delayS(8));
+    //delay(delayS(8));
 
+    //make an adjustment here to recalibrate robot's position in the middle.
+
+    forwardMinSpeed = 2700;
+    forwardMaxSpeed = 7800;
+    turnMinSpeed = 2300;
+    turnMaxSpeed = 7000;
+
+    
     //Mouvement 30
-    Movement::turnLeft(135);
-    Movement::moveForward(20);
-    /*move to position 1*/
     rLedOn();
-    delay(delayS(4));
+    
+    delay(delayS(3));
+    //Movement::moveForward(25,3000,forwardMaxSpeed);
+    /*move to position 1*/
+    //delay(delayS(4));
     rLedOff();
 
     //Mouvement 31
-    Movement::turnLeft(135);
-    Movement::moveForward(28.28);
-    /*move to position 2*/
     yLedOn();
-    delay(delayS(4));
+    Movement::turnRight(135,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    /*move to position 2*/
+    //delay(delayS(4));
     yLedOff();
     
     //Mouvement 32
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 3*/
     gLedOn();
-    delay(delayS(4));
+    Movement::turnLeft(90,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    /*move to position 3*/
+    //delay(delayS(4));
     gLedOff();
     
     //Mouvement 33
-    Movement::turnLeft(90);
-    Movement::moveForward(28.28);
-    /*move to position 4*/
     bLedOn();
-    delay(delayS(4));
+    Movement::turnLeft(100,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    /*move to position 4*/
+    //delay(delayS(4));
     bLedOff();
     
+    forwardMinSpeed = 3200;
+    forwardMaxSpeed = 8400;
+    turnMinSpeed = 2800;
+    turnMaxSpeed = 7600;
+
     //Mouvement 34
-    Movement::turnLeft(135);
-    Movement::moveForward(20);
-    /*move to position 0*/
     allOn();
-    delay(delayS(4));
+    Movement::turnLeft(135,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(20,forwardMinSpeed,forwardMaxSpeed);
+    /*move to position 0*/
+    //delay(delayS(4));
     allOff();
     
     //Mouvement 35
     randomLed();
-    Movement::turnRight(720);
+    Movement::turnRight(690,turnMinSpeed,turnMaxSpeed);
     //randomLed(4);
-    delay(delayS(4));
+    //delay(delayS(4));
     allOff();
 
+    forwardMinSpeed = 3500;
+    forwardMaxSpeed = 8200;
+    turnMinSpeed = 3300;
+    turnMaxSpeed = 7400;
+
     //Mouvement 36
-    Movement::turnLeft(45);
-    Movement::moveForward(28.28);
-    Movement::turnRight(45);
-    Movement::moveForward(40);
-    Movement::turnRight(45);
-    Movement::moveForward(28.28);
+    Movement::turnLeft(45,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
+    Movement::turnRight(45,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(10,forwardMinSpeed,forwardMaxSpeed);
+    Movement::turnRight(45,turnMinSpeed,turnMaxSpeed);
+    Movement::moveForward(28.28,forwardMinSpeed,forwardMaxSpeed);
     /*Échange de carré*/
     delay(delayS(8));
-    
+
+//=================seuil de succès==================    
+//================= seuil de test ==================
+
     //Mouvement 37
     Movement::turnRight(45);
     Movement::moveForward(20);
