@@ -9,26 +9,24 @@
 
 constexpr int FRONT_BUMPER_ID = 2;
 
-/*void setup() {
+void setup() {
    BoardInit();
    Movement::init();
    //LEDInit();
    Serial.begin(115200);
-   Serial.println("iuhasdfiuhuisdfh");
    //vSetupLineSensors();
 }
 
 void loop() {
    if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
-    Serial.println("iuhasdfiuhuisdfh");
-       Movement::moveForwardNonBlocking(99999);
+       Movement::moveForwardNonBlocking(99999, 400, 4000);
    }
 
-   Serial.println("aosdjf");
+   ucReadLineSensors();
    //vCourseCorrection();
-   Movement::runMovementController();
-   delay(5);
-}*/
+   //Movement::runMovementController();
+   delay(300);
+}
 
 
 
@@ -40,7 +38,7 @@ void loop() {
 
 
 
-
+/*
 void setup() {
   BoardInit();
   Movement::init();
@@ -58,7 +56,7 @@ void loop() {
   if(ROBUS_IsBumper(FRONT_BUMPER_ID)){
     faireQuille();
   }
-}
+}*/
 
 // void setup() {
 //   BoardInit();

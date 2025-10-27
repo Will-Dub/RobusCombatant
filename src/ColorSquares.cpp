@@ -1,21 +1,20 @@
 #include "ColorSquares.h"
 #include <Arduino.h>
-#include <GroveColorSensor.h>
 
-GroveColorSensor RGBsensor;
+//GroveColorSensor RGBsensor;
 
 void vInitColorSensor()
 {
-    RGBsensor.ledStatus = 1; // Enable LED
+    //RGBsensor.ledStatus = 1; // Enable LED
 }
 
 unsigned char ucDetectColorSquare()
 {
-    int iRed; 
-    int iGreen; 
+    int iRed;
+    int iGreen;
     int iBlue;
 
-    RGBsensor.readRGB(&iRed, &iGreen, &iBlue);
+    //RGBsensor.readRGB(&iRed, &iGreen, &iBlue);
     if ( (iRed > 200) && (iGreen < 100) && (iBlue > 150) )
     {
         return PINK_SQUARE;

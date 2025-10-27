@@ -21,6 +21,12 @@ unsigned char ucReadLineSensors()
     int iMiddleSensorValue = analogRead(MIDDLE_SENSOR_PIN);
     int iRightSensorValue = analogRead(RIGHT_SENSOR_PIN);
 
+    Serial.print(iLeftSensorValue);
+    Serial.print("-");
+    Serial.print(iMiddleSensorValue);
+    Serial.print("-");
+    Serial.println(iRightSensorValue);
+
     if (iLeftSensorValue >= WHITE_THRESHOLD) { bLeftSensor = true;}
     if (iMiddleSensorValue >= WHITE_THRESHOLD) { bMiddleSensor = true;}
     if (iRightSensorValue >= WHITE_THRESHOLD) { bRightSensor = true;}
