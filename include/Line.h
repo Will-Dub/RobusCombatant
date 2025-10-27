@@ -7,7 +7,7 @@
 #define MIDDLE_SENSOR_PIN A6
 #define RIGHT_SENSOR_PIN A5
 
-constexpr int WHITE_THRESHOLD = 1000;
+constexpr int WHITE_THRESHOLD = 920;
 
 enum StationEnum { NONE, WALL_DODGE, LOSANGE, LOST_LINE, QUILLE};
 

@@ -22,10 +22,9 @@ void loop() {
        Movement::moveForwardNonBlocking(99999, 400, 4000);
    }
 
-   ucReadLineSensors();
-   //vCourseCorrection();
-   //Movement::runMovementController();
-   delay(300);
+   vCourseCorrection();
+   Movement::runMovementController();
+   delay(5);
 }
 
 
