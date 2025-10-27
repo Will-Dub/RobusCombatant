@@ -1,5 +1,6 @@
 #include "Line.h"
 #include "ColorSquares.h" 
+#include "WallDodge.h"
 #include <Arduino.h>
 
 StationEnum ucStation = NONE;
@@ -144,8 +145,11 @@ unsigned char ucDecideStation()
             if (bYellowStationFlag == false)
             {
                 ucCurrentStation = StationEnum::WALL_DODGE;
+                vWallDodge();
             }
             bYellowStationFlag = true;
+            ucCurrentStation = StationEnum::NONE; // Wall is dodged, resume line follow behavior
+            vCourseCorrection();
             break;
 
         case WTF_KINDA_COLOR_SQUARE:

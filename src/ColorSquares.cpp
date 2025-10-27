@@ -1,43 +1,50 @@
 #include "ColorSquares.h"
 #include <Arduino.h>
-#include <GroveColorSensor.h>
+#include <Adafruit_TCS34725.h>
 
-GroveColorSensor RGBsensor;
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_101MS, TCS34725_GAIN_4X);
 
 void vInitColorSensor()
 {
-    RGBsensor.ledStatus = 1; // Enable LED
+    Wire.begin();
+    if (tcs.begin()) // Makes sure sensor is detected
+    {
+        tcs.setInterrupt(false);
+        delay(100);
+    }
 }
 
 unsigned char ucDetectColorSquare()
 {
-    int iRed; 
-    int iGreen; 
-    int iBlue;
+    uint16_t r, g, b, c;
+    tcs.getRawData(&r, &g, &b, &c);
+    float total = r + g + b;
+    if (total == 0)
+    {
+        total = 1;
+    }
+    float red = (float)r / total;
+    float green = (float)g / total;
+    float blue = (float)b / total;
 
-    RGBsensor.readRGB(&iRed, &iGreen, &iBlue);
-    if ( (iRed > 200) && (iGreen < 100) && (iBlue > 150) )
+    if (red > blue * 1.3 && red > green * 1.3)
     {
         return PINK_SQUARE;
     }
-    else if ( (iRed < 100) && (iGreen > 200) && (iBlue < 100) )
-    {
-        return GREEN_SQUARE;
-    }
-    else if ( (iRed < 100) && (iGreen < 100) && (iBlue > 200) )
+    else if (blue > red * 1.3 && blue > green * 1.3)
     {
         return BLUE_SQUARE;
     }
-    else if ( (iRed > 200) && (iGreen > 200) && (iBlue < 100) )
+    else if (green > red * 1.3 && green > blue * 1.3)
+    {
+        return GREEN_SQUARE;
+    }
+    else if ((red + green) / 2 > blue * 1.2)
     {
         return YELLOW_SQUARE;
     }
-    else if ( (iRed < 50) && (iGreen < 50) && (iBlue < 50) )
-    {
-        return NO_SQUARE;
-    }
     else
     {
-        return WTF_KINDA_COLOR_SQUARE;
+        return NO_SQUARE;
     }
 }
