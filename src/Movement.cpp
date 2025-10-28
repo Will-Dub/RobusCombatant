@@ -40,7 +40,6 @@ namespace Movement {
         moveForwardNonBlocking(99999, pMinSpeed, pMaxSpeed);
         while(currentMove != MoveEnum::NONE){
             runMovementController();
-            delay(1);
 
             if(ucReadLineSensors() != 0){
                 linePoolCount++;
@@ -180,10 +179,10 @@ namespace Movement {
 
                     // Offset de ligne (si utilisé ailleurs)
                     switch(offsetMode){
-                        case LineOffsetEnum::PETIT_GAUCHE: leftSpeed  *= 0.65f; break;
-                        case LineOffsetEnum::GRAND_GAUCHE: leftSpeed  *= 0.15f; break;
-                        case LineOffsetEnum::PETIT_DROITE: rightSpeed *= 0.65f; break;
-                        case LineOffsetEnum::GRAND_DROITE: rightSpeed *= 0.15f; break;
+                        case LineOffsetEnum::PETIT_GAUCHE: leftSpeed  *= 0.55f; break;
+                        case LineOffsetEnum::GRAND_GAUCHE: leftSpeed  *= 0.10f; break;
+                        case LineOffsetEnum::PETIT_DROITE: rightSpeed *= 0.55f; break;
+                        case LineOffsetEnum::GRAND_DROITE: rightSpeed *= 0.10f; break;
                         case LineOffsetEnum::AUCUN: default: break;
                     }
 

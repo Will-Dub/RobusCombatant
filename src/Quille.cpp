@@ -4,8 +4,10 @@ bool isQuilleFound = false;
 float distanceTourner = 0;
 
 void faireQuille(){
+    Movement::moveForward(30);
+
     // Scan pour la quille
-    Movement::turnRightNonBlocking(360, 500, 2500);
+    Movement::turnRightNonBlocking(360, 1000, 3500);
     waitEndMoveFinding();
 
     // Vérifie si la quille a été trouvé
@@ -29,10 +31,15 @@ void goBackToStart(){
     Movement::turnRight(170);
 
     // Retourne au milieu
-    Movement::moveForward(FORWARD_DISTANCE);
+    Movement::moveUntilLine();
 
     // Fini le tour de 360
-    Movement::turnLeft(180+Movement::distanceToAngle(distanceTourner));
+    float angle = Movement::distanceToAngle(distanceTourner);
+    if(angle <= 170){
+        Movement::turnRight(170-angle);
+    }else{
+        Movement::turnLeft(angle-170);
+    }
 
     // Reset
     isQuilleFound = false;
@@ -45,7 +52,6 @@ void waitEndMoveFinding(){
 
         if (getIRIsDetected()) {
             Serial.println("Quille trouvé");
-            delay(3);
             isQuilleFound = true;
             Movement::stop();
             distanceTourner = WHEEL_PID::getRightCoveredDistance();

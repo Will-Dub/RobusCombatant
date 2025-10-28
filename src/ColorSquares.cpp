@@ -31,7 +31,7 @@ unsigned char ucDetectColorSquare()
 
     // Normalize to sum = 1 (to reduce light intensity effects)
     float sum = r + g + b;
-    if (clear < 1200.0f) return NO_SQUARE;  // very dark area
+    if (clear < 2500.0f) return NO_SQUARE;  // very dark area
 
     r /= sum;
     g /= sum;
@@ -51,17 +51,16 @@ unsigned char ucDetectColorSquare()
     if (r > 0.28f && r > g * 0.95f && r < b * 1.05f) {
         return PINK_SQUARE;  // purple-ish
     }
-    else if (b > g * 1.05f && b > r * 1.05f) {
+    else if (b > g * 1.05f && b > r * 1.05f) { 
         return BLUE_SQUARE;
     }
     else if ((r + g)/2 > b * 1.05 && fabsf(r - g) < 0.10) {
         return YELLOW_SQUARE;
     }
-    else if (g > r * 1.05f && g > b * 1.05f) {
+    else if (g > r * 1.15f && g > b * 1.01f) {
         return GREEN_SQUARE;
     }
     else {
         return NO_SQUARE;
     }
-
 }

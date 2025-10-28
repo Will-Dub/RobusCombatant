@@ -5,10 +5,11 @@
 
 void vWallDodge()
 {
-    Movement::turnRight(90);
+    Movement::turnRight(80);
+    Movement::moveForward(40);
+    Movement::turnLeft(80);
     Movement::moveForward(50);
-    Movement::turnLeft(90);
-    Movement::moveForward(50);
-    Movement::turnLeft(45);
+    Movement::turnLeft(80);
     Movement::moveUntilLine();
+    Movement::turnRight(50);
 }

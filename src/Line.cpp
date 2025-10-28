@@ -35,7 +35,7 @@ void vCourseCorrection()
     switch (ucSensorState) {
         case 0b000:
             Serial.println("No line detected");
-            if (ucStation == StationEnum::NONE || ucStation == StationEnum::LOST_LINE) {/* LOST THE LINE, SWEEPING TO FIND IT AGAIN */ }
+            if (ucStation == StationEnum::NONE) {/* LOST THE LINE, SWEEPING TO FIND IT AGAIN */ }
             break; 
         case 0b001:
             Serial.println("Right sensor on line");

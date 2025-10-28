@@ -22,10 +22,10 @@ void setup() {
 
 void loop() {
     if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
-        Movement::moveForwardNonBlocking(99999, 400, 4000);
+        Movement::moveForwardNonBlocking(99999, 1000, 7000);
     }
 
-    if (millis() - lastRead >= 50) {
+    if (millis() - lastRead >= 100) {
         lastRead = millis();
         StationEnum station = ucDecideStation();
         switch(station){
@@ -36,7 +36,8 @@ void loop() {
                 faireLosange();
                 break;
             case LOST_LINE:
-                Movement::moveUntilLine();
+                Movement::moveForward(100, 1000, 4000);
+                Movement::moveUntilLine(1000, 4000);
                 break;
             case QUILLE:
                 faireQuille();
