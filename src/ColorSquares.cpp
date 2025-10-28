@@ -4,6 +4,8 @@
 
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_101MS, TCS34725_GAIN_4X);
 
+bool readingInProgress = false;
+
 void vInitColorSensor()
 {
     Wire.begin();
@@ -16,6 +18,7 @@ void vInitColorSensor()
 
 unsigned char ucDetectColorSquare()
 {
+    readingInProgress = false;
     uint16_t red, green, blue, clear;
     tcs.getRawData(&red, &green, &blue, &clear);
 

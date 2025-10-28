@@ -10,47 +10,44 @@
 #include "WallDodge.h"
 
 constexpr int FRONT_BUMPER_ID = 2;
-constexpr int COLOR_INTERVAL_MS = 1000;
-unsigned long lastColorCheck = millis();
+unsigned long lastRead = 0;
 
 void setup() {
-   BoardInit();
-   Movement::init();
-   vInitColorSensor();
-   //LEDInit();
-   Serial.begin(115200);
+    BoardInit();
+    Movement::init();
+    vInitColorSensor();
+    //LEDInit();
+    Serial.begin(115200);
 }
 
 void loop() {
-   if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
-       Movement::moveForwardNonBlocking(99999, 400, 4000);
-   }
-
-  unsigned long now = millis();
-  if(now - lastColorCheck >= COLOR_INTERVAL_MS){
-      lastColorCheck = now;
-      ucDecideStation();
-      /*StationEnum station = ucDecideStation();
-      switch(station){
-          case WALL_DODGE:
-              vWallDodge();
-              break;
-          case LOSANGE:
-              faireLosange();
-              break;
-          case LOST_LINE:
-              Movement::moveUntilLine();
-              break;
-          case QUILLE:
-              faireQuille();
-              break;
-          default:
-              break;
-        }*/
+    if(Movement::getCurrentMove() == Movement::MoveEnum::NONE){
+        Movement::moveForwardNonBlocking(99999, 400, 4000);
     }
 
-   vCourseCorrection();
-   Movement::runMovementController();
+    if (millis() - lastRead >= 50) {
+        lastRead = millis();
+        StationEnum station = ucDecideStation();
+        switch(station){
+            case WALL_DODGE:
+                vWallDodge();
+                break;
+            case LOSANGE:
+                faireLosange();
+                break;
+            case LOST_LINE:
+                Movement::moveUntilLine();
+                break;
+            case QUILLE:
+                faireQuille();
+                break;
+            default:
+                break;
+        }
+    }
+
+    vCourseCorrection();
+    Movement::runMovementController();
 }
 
 
