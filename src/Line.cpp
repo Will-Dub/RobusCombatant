@@ -98,10 +98,10 @@ void vCourseCorrection()
 
 StationEnum ucDecideStation()
 {
-    bool bPinkStationFlag = false; // TO KNOW IF WE HAVE PASSED THE PINK STATION ALREADY
-    bool bBlueStationFlag = false; // TO KNOW IF WE HAVE PASSED THE BLUE STATION ALREADY
-    bool bGreenStationFlag = false; // TO KNOW IF WE HAVE PASSED THE GREEN STATION ALREADY
-    bool bYellowStationFlag = false; // TO KNOW IF WE HAVE PASSED THE YELLOW STATION ALREADY
+    static bool bPinkStationFlag = false; // TO KNOW IF WE HAVE PASSED THE PINK STATION ALREADY
+    static bool bBlueStationFlag = false; // TO KNOW IF WE HAVE PASSED THE BLUE STATION ALREADY
+    static bool bGreenStationFlag = false; // TO KNOW IF WE HAVE PASSED THE GREEN STATION ALREADY
+    static bool bYellowStationFlag = false; // TO KNOW IF WE HAVE PASSED THE YELLOW STATION ALREADY
 
     unsigned char ucColor = ucDetectColorSquare();
     StationEnum ucCurrentStation = StationEnum::NONE;
