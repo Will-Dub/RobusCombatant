@@ -31,7 +31,9 @@ void goBackToStart(){
     Movement::turnRight(170);
 
     // Retourne au milieu
+    Movement::moveForward(FORWARD_DISTANCE-15);
     Movement::moveUntilLine();
+    Movement::moveForward(6);
 
     // Fini le tour de 360
     float angle = Movement::distanceToAngle(distanceTourner);
