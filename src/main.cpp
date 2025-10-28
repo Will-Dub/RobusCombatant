@@ -8,6 +8,7 @@
 #include "Losange.h"
 #include "ColorSquares.h"
 #include "WallDodge.h"
+#include "LostLine.h"
 
 constexpr int FRONT_BUMPER_ID = 2;
 unsigned long lastRead = 0;
@@ -16,7 +17,7 @@ void setup() {
     BoardInit();
     Movement::init();
     vInitColorSensor();
-    //LEDInit();
+    LEDInit();
     Serial.begin(115200);
 }
 
@@ -30,14 +31,15 @@ void loop() {
         StationEnum station = ucDecideStation();
         switch(station){
             case WALL_DODGE:
+                yLedOn();
                 vWallDodge();
+                yLedOff();
                 break;
             case LOSANGE:
                 faireLosange();
                 break;
             case LOST_LINE:
-                Movement::moveForward(100, 1000, 4000);
-                Movement::moveUntilLine(1000, 4000);
+                faireLostLine();
                 break;
             case QUILLE:
                 faireQuille();

@@ -6,10 +6,10 @@
 //fichier qui contrôle les LED de couleurs pour la dance
 
 //choisi les sorties digitales associés à chaque LED !!!!!!!!!(changer lorsqu'on aura choisit quelles pin utiliser pour les DELs)
-const int YLED = 49;
-const int RLED = 48;
-const int GLED = 47;
-const int BLED = 46;
+const int YLED = 50;
+const int RLED = 49;
+const int GLED = 48;
+const int BLED = 51;
 
 //ADJUST DELAYS FOR THE FUTURE!!!! -> should be fine now
 const int flashDelay = 250; //durée d'un flash

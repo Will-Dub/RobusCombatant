@@ -8,7 +8,7 @@ void vWallDodge()
     Movement::turnRight(80);
     Movement::moveForward(40);
     Movement::turnLeft(80);
-    Movement::moveForward(50);
+    Movement::moveForward(40);
     Movement::turnLeft(80);
     Movement::moveUntilLine();
     Movement::turnRight(50);
