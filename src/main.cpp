@@ -36,13 +36,19 @@ void loop() {
                 yLedOff();
                 break;
             case LOSANGE:
+                bLedOn();
                 faireLosange();
+                bLedOff();
                 break;
             case LOST_LINE:
+                gLedOn();
                 faireLostLine();
+                gLedOff();
                 break;
             case QUILLE:
+                rLedOn();
                 faireQuille();
+                rLedOff();
                 break;
             default:
                 break;
