@@ -4,7 +4,7 @@ bool isQuilleFound = false;
 float distanceTourner = 0;
 
 void faireQuille(){
-    Movement::moveForward(30);
+    Movement::moveForward(15);
 
     // Scan pour la quille
     Movement::turnRightNonBlocking(360, 1000, 3500);
@@ -37,9 +37,9 @@ void goBackToStart(){
 
     // Fini le tour de 360
     float angle = Movement::distanceToAngle(distanceTourner);
-    if(angle <= 170){
+    if(angle <= 90){
         Movement::turnRight(170-angle);
-    }else{
+    }else if(angle >= 270){
         Movement::turnLeft(angle-170);
     }
 
