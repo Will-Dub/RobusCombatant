@@ -29,23 +29,27 @@ namespace Movement {
         waitEndMove();
     }
 
+    void turnRightUntilLine(int pMinSpeed,
+                              int pMaxSpeed){
+        turnRightNonBlocking(360, pMinSpeed, pMaxSpeed);
+        waitUntilLine();
+    }
+
     void turnLeft(float angle_deg, int pMinSpeed, int pMaxSpeed) {
         turnLeftNonBlocking(angle_deg, pMinSpeed, pMaxSpeed);
         waitEndMove();
     }
 
+     void turnLeftUntilLine(int pMinSpeed,
+                              int pMaxSpeed){
+        turnLeftNonBlocking(360, pMinSpeed, pMaxSpeed);
+        waitUntilLine();
+    }
+
     void moveUntilLine(int pMinSpeed, int pMaxSpeed)
     {
-        int linePoolCount = 0;
         moveForwardNonBlocking(99999, pMinSpeed, pMaxSpeed);
-        while(currentMove != MoveEnum::NONE){
-            runMovementController();
-
-            if(ucReadLineSensors() != 0){
-                linePoolCount++;
-                if(linePoolCount >= 3) stop();
-            }
-        }
+        waitUntilLine();
     }
 
     // ===== API non-bloquante =====
@@ -91,6 +95,19 @@ namespace Movement {
         while(currentMove != MoveEnum::NONE){
             runMovementController();
             delay(1);
+        }
+    }
+
+    void waitUntilLine(){
+        int linePoolCount = 0;
+        while(currentMove != MoveEnum::NONE){
+            runMovementController();
+            delay(1);
+
+            if(ucReadLineSensors() != 0){
+                linePoolCount++;
+                if(linePoolCount >= 3) stop();
+            }
         }
     }
 

@@ -38,9 +38,9 @@ void goBackToStart(){
     // Fini le tour de 360
     float angle = Movement::distanceToAngle(distanceTourner);
     if(angle <= 170){
-        Movement::turnRight(170-angle);
+        Movement::turnRightUntilLine();
     }else{
-        Movement::turnLeft(angle-170);
+        Movement::turnLeftUntilLine();
     }
 
     // Reset
