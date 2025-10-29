@@ -23,6 +23,7 @@ void setup() {
     vInitColorSensor();
     LEDInit();
     Serial.begin(115200);
+
     waitForWhistle();
 }
 

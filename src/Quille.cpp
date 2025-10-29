@@ -7,7 +7,7 @@ void faireQuille(){
     Movement::moveForward(30);
 
     // Scan pour la quille
-    Movement::turnRightNonBlocking(360, 1000, 3500);
+    Movement::turnRightNonBlocking(360, 1000, 3000);
     waitEndMoveFinding();
 
     // Vérifie si la quille a été trouvé
@@ -59,7 +59,7 @@ void waitEndMoveFinding(){
             distanceTourner = WHEEL_PID::getRightCoveredDistance();
             break;
         }
-        delay(5);
+        delay(2);
     }
 }
 
@@ -68,7 +68,7 @@ float getIRDistance()
     int raw = ROBUS_ReadIR(IR_PIN);
 
     float vout = float(raw) * 0.0048828125; // Conversion analog to voltage
-    int distance = 13 * pow(vout, -1);
+    float distance = 27.86 * pow(vout, -1.15);
 
     Serial.println(distance);
 
