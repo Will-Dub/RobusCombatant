@@ -11,7 +11,10 @@
 #include "LostLine.h"
 
 constexpr int FRONT_BUMPER_ID = 2;
+constexpr int LEFT_BUMPER_ID = 0;
+constexpr int RIGHT_BUMPER_ID = 1;
 constexpr float WHISTLE_THRESHOLD = 200;
+bool quilleRight = true;
 
 unsigned long lastRead = 0;
 
@@ -53,7 +56,7 @@ void loop() {
                 break;
             case QUILLE:
                 rLedOn();
-                faireQuille();
+                faireQuille(quilleRight);
                 rLedOff();
                 break;
             default:
@@ -73,6 +76,12 @@ void waitForWhistle(){
         if((A2Value - A4Value) >= WHISTLE_THRESHOLD || ROBUS_IsBumper(FRONT_BUMPER_ID))
         {
             return;
+        }
+
+        if(ROBUS_IsBumper(LEFT_BUMPER_ID)){
+            quilleRight = false;
+        }else if(ROBUS_IsBumper(RIGHT_BUMPER_ID)){
+            quilleRight = true;
         }
 
         delay(10);

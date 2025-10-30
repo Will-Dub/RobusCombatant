@@ -3,11 +3,15 @@
 bool isQuilleFound = false;
 float distanceTourner = 0;
 
-void faireQuille(){
+void faireQuille(bool quilleRight){
     Movement::moveForward(30);
 
     // Scan pour la quille
-    Movement::turnRightNonBlocking(360, 1000, 3000);
+    if(quilleRight){
+        Movement::turnRightNonBlocking(360, 1000, 3000);
+    }else{
+        Movement::turnLeftNonBlocking(360, 1000, 3000);
+    }
     waitEndMoveFinding();
 
     // Vérifie si la quille a été trouvé

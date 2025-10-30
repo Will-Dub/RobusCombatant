@@ -6,10 +6,10 @@
 
 // Rayon du cercle
 constexpr float FORWARD_DISTANCE = 50.0f;
-constexpr float MAX_QUILLE_SENSOR_DISTANCE = 40.0f;
+constexpr float MAX_QUILLE_SENSOR_DISTANCE = 37.0f;
 constexpr uint16_t IR_PIN = 3;
 
-void faireQuille();
+void faireQuille(bool quilleRight);
 void waitEndMoveFinding();
 void waitEndMoveGoingTo();
 void goBackToStart();
